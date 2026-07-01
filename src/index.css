@@ -1,0 +1,568 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #f8fafc;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark body {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+/* ── Page enter animation ─────────────────────── */
+@keyframes page-enter-kf {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.page-enter { animation: page-enter-kf 0.3s cubic-bezier(0.4,0,0.2,1) both; }
+
+@keyframes fade-in-kf {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+.animate-fade-in { animation: fade-in-kf 0.4s ease both; }
+
+@keyframes slide-up-kf {
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slide-up-kf 0.35s cubic-bezier(0.4,0,0.2,1) both; }
+
+/* ── Sidebar nav active states ──────────────── */
+.nav-active-blue {
+  background: linear-gradient(90deg, rgba(59,130,246,0.12), rgba(59,130,246,0.04));
+  border-left: 3px solid #3b82f6;
+  color: #1d4ed8;
+}
+.nav-active-purple {
+  background: linear-gradient(90deg, rgba(139,92,246,0.12), rgba(139,92,246,0.04));
+  border-left: 3px solid #8b5cf6;
+  color: #6d28d9;
+}
+.nav-active-amber {
+  background: linear-gradient(90deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04));
+  border-left: 3px solid #f59e0b;
+  color: #b45309;
+}
+
+html.dark .nav-active-blue   { color: #93c5fd; }
+html.dark .nav-active-purple { color: #c4b5fd; }
+html.dark .nav-active-amber  { color: #fcd34d; }
+
+/* ── Glass utilities ──────────────────────────── */
+@layer utilities {
+  .glass {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.6);
+  }
+  html.dark .glass {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .glass-dark {
+    background: rgba(15,23,42,0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .glass-white {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.6);
+  }
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #60a5fa, #0066FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #c4b5fd, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* ── Stat chip ──────────────────────────────── */
+.stat-chip {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 0.75rem;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  border: 1px solid #f1f5f9;
+  text-align: center;
+  min-width: 0;
+}
+
+html.dark .stat-chip {
+  background: #1e293b;
+  border-color: rgba(255,255,255,0.07);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+
+/* ── Professional data table ────────────────── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.data-table thead tr { border-bottom: 1px solid #e2e8f0; }
+.data-table thead th { padding: 0.75rem 1rem; text-align: left; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; background: #f8fafc; }
+.data-table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.15s; }
+.data-table tbody tr:hover { background: rgba(59,130,246,0.03); }
+.data-table tbody td { padding: 0.75rem 1rem; color: #374151; font-weight: 500; }
+.data-table tbody tr:last-child { border-bottom: none; }
+
+html.dark .data-table thead th { background: #1e293b; color: #64748b; border-color: rgba(255,255,255,0.07); }
+html.dark .data-table tbody tr { border-color: rgba(255,255,255,0.05); }
+html.dark .data-table tbody td { color: #e2e8f0; }
+html.dark .data-table tbody tr:hover { background: rgba(59,130,246,0.06); }
+
+/* ── Card shadow ──────────────────────────────── */
+.shadow-card { box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.05); }
+html.dark .shadow-card { box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.25); }
+
+.shadow-card-hover { box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
+
+/* ── Card hover ─────────────────────────────── */
+.card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.card-hover:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+
+/* ── Odometer digit ─────────────────────────── */
+.digit { display: inline-block; font-weight: 800; }
+
+/* ── Smooth transitions ─────────────────────── */
+.transition-all { transition: all 0.22s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── Scrollbar ──────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: rgba(0,102,255,0.28); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,102,255,0.52); }
+
+html.dark ::-webkit-scrollbar-track { background: #0f172a; }
+html.dark ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); }
+
+/* ── Focus ────────────────────────────────────── */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid #0066FF;
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* ── Shimmer ────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+.shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 100%;
+}
+
+/* ── Orbs ───────────────────────────────────── */
+@keyframes orb-drift {
+  0%   { transform: translate(0,0) scale(1); }
+  33%  { transform: translate(30px,-20px) scale(1.05); }
+  66%  { transform: translate(-20px,15px) scale(0.97); }
+  100% { transform: translate(0,0) scale(1); }
+}
+.orb                  { animation: orb-drift 12s ease-in-out infinite; will-change: transform; }
+.orb:nth-child(2)     { animation-delay: -4s; }
+.orb:nth-child(3)     { animation-delay: -8s; }
+
+/* ── Live pulse dot ─────────────────────────── */
+@keyframes live-pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.6; transform: scale(1.4); }
+}
+.live-dot { animation: live-pulse 1.5s ease-in-out infinite; }
+
+/* ── Loading spinner ──────────────────────────── */
+@keyframes btn-spin { to { transform: rotate(360deg); } }
+.animate-spin { animation: btn-spin 0.75s linear infinite; }
+
+/* ── Lucide icon in button baseline fix ──────── */
+button svg { display: inline-block; vertical-align: middle; }
+
+/* ── Form inputs ─────────────────────────────── */
+input[type="tel"], input[type="email"], input[type="text"], input[type="password"] {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Number font ──────────────────────────────── */
+.font-tabular { font-variant-numeric: tabular-nums; }
+
+/* ── Toast animations ─────────────────────────── */
+@keyframes toast-in {
+  0%   { opacity: 0; transform: translateX(20px) scale(0.95); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+.animate-toast-in { animation: toast-in 0.3s cubic-bezier(0.4,0,0.2,1) both; }
+
+/* ── Glow pulse ───────────────────────────────── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 4px currentColor; }
+  50%      { box-shadow: 0 0 12px currentColor, 0 0 24px currentColor; }
+}
+.glow-pulse { animation: glow-pulse 2s ease-in-out infinite; }
+
+/* ── BESS card surfaces ───────────────────────── */
+.bess-card {
+  background: linear-gradient(135deg, rgba(59,130,246,0.05), rgba(139,92,246,0.05));
+  border: 1px solid rgba(99,102,241,0.1);
+  border-radius: 1rem;
+  transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+.bess-card:hover {
+  border-color: rgba(99,102,241,0.2);
+  box-shadow: 0 4px 24px rgba(59,130,246,0.08);
+}
+
+/* ── Energy flow line styles ──────────────────── */
+.flow-line {
+  stroke-linecap: round;
+  transition: stroke-width 0.5s ease, opacity 0.5s ease;
+}
+.flow-dot {
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+/* ── Recharts tooltip light mode ─────────────── */
+html:not(.dark) .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* ── Battery gauge ring ─────────────────────── */
+.battery-ring-track { stroke: #1e293b; }
+html:not(.dark) .battery-ring-track { stroke: #e2e8f0; }
+.battery-ring-fill  { transition: stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── Skeleton shimmer ─────────────────────────── */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+/* ── Print styles ─────────────────────────────── */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white !important; color: black !important; }
+}
+
+/* ── Responsive admin padding ─────────────────── */
+@media (max-width: 1023px) {
+  .admin-page { padding: 1rem; }
+}
+
+/* ── Chart containers ─────────────────────────── */
+.chart-container {
+  min-height: 200px;
+  width: 100%;
+}
+
+/* ── Tooltip utility ──────────────────────────── */
+[data-tooltip] { position: relative; }
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  padding: 4px 8px;
+  background: #1e293b;
+  color: #e2e8f0;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+[data-tooltip]:hover::after { opacity: 1; }
+
+/* ── Dark mode: keep inputs readable ──────────── */
+html.dark input, html.dark select, html.dark textarea {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  border-color: rgba(255,255,255,0.1);
+}
+html.dark input::placeholder, html.dark textarea::placeholder { color: #475569; }
+
+html.dark .toast-item {
+  background: rgba(15,23,42,0.95) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+
+/* ── Dark mode: text color flips ───────────────── */
+html.dark .text-gray-900 { color: #f1f5f9 !important; }
+html.dark .text-gray-800 { color: #e2e8f0 !important; }
+html.dark .text-gray-700 { color: #cbd5e1 !important; }
+html.dark .text-gray-600 { color: #94a3b8 !important; }
+html.dark .text-gray-500 { color: #94a3b8 !important; }
+html.dark .text-gray-400 { color: #94a3b8 !important; }
+/* gray-300 was incorrectly mapped to #334155 (too dark) — fix to a readable mid-gray */
+html.dark .text-gray-300 { color: #94a3b8 !important; }
+html.dark .text-gray-200 { color: #cbd5e1 !important; }
+html.dark .text-slate-900 { color: #f1f5f9 !important; }
+html.dark .text-slate-800 { color: #e2e8f0 !important; }
+html.dark .text-slate-700 { color: #cbd5e1 !important; }
+html.dark .text-slate-600 { color: #94a3b8 !important; }
+html.dark .text-slate-500 { color: #94a3b8 !important; }
+
+/* Dark-mode overrides for colored text used on tinted card backgrounds */
+html.dark .text-green-900  { color: #86efac !important; }
+html.dark .text-green-800  { color: #86efac !important; }
+html.dark .text-green-700  { color: #4ade80 !important; }
+html.dark .text-green-600  { color: #4ade80 !important; }
+html.dark .text-red-900    { color: #fca5a5 !important; }
+html.dark .text-red-800    { color: #fca5a5 !important; }
+html.dark .text-red-700    { color: #f87171 !important; }
+html.dark .text-orange-700 { color: #fb923c !important; }
+html.dark .text-orange-600 { color: #fb923c !important; }
+html.dark .text-amber-700  { color: #fcd34d !important; }
+
+/* yellow-300 is too light in both modes — darken it for light mode, keep it for dark */
+html:not(.dark) .text-yellow-300 { color: #92400e !important; }
+html.dark       .text-yellow-300 { color: #fde68a !important; }
+
+/* ── Dark mode: background color flips ─────────── */
+html.dark .bg-white { background-color: #1e293b !important; }
+html.dark .bg-gray-50 { background-color: #0f172a !important; }
+html.dark .bg-gray-100 { background-color: #1e293b !important; }
+html.dark .bg-slate-50 { background-color: #0f172a !important; }
+html.dark .bg-blue-50 { background-color: rgba(59,130,246,0.12) !important; }
+html.dark .bg-green-50 { background-color: rgba(34,197,94,0.12) !important; }
+html.dark .bg-red-50 { background-color: rgba(239,68,68,0.12) !important; }
+html.dark .bg-yellow-50 { background-color: rgba(234,179,8,0.12) !important; }
+html.dark .bg-orange-50 { background-color: rgba(249,115,22,0.12) !important; }
+html.dark .bg-purple-50 { background-color: rgba(139,92,246,0.12) !important; }
+html.dark .bg-amber-50 { background-color: rgba(245,158,11,0.12) !important; }
+html.dark .bg-emerald-50 { background-color: rgba(16,185,129,0.12) !important; }
+html.dark .bg-indigo-50 { background-color: rgba(99,102,241,0.12) !important; }
+html.dark .bg-pink-50 { background-color: rgba(236,72,153,0.12) !important; }
+html.dark .bg-teal-50 { background-color: rgba(20,184,166,0.12) !important; }
+html.dark .bg-cyan-50 { background-color: rgba(6,182,212,0.12) !important; }
+html.dark .bg-lime-50 { background-color: rgba(132,204,22,0.12) !important; }
+html.dark .bg-rose-50 { background-color: rgba(244,63,94,0.12) !important; }
+html.dark .bg-sky-50 { background-color: rgba(14,165,233,0.12) !important; }
+html.dark .bg-violet-50 { background-color: rgba(139,92,246,0.12) !important; }
+html.dark .bg-fuchsia-50 { background-color: rgba(217,70,239,0.12) !important; }
+
+/* ── Dark mode: border color flips ─────────────── */
+html.dark .border-gray-100 { border-color: rgba(255,255,255,0.07) !important; }
+html.dark .border-gray-200 { border-color: rgba(255,255,255,0.10) !important; }
+html.dark .border-gray-300 { border-color: rgba(255,255,255,0.14) !important; }
+html.dark .border-gray-800 { border-color: rgba(255,255,255,0.08) !important; }
+html.dark .border-gray-900 { border-color: rgba(255,255,255,0.10) !important; }
+html.dark .border-slate-700 { border-color: rgba(255,255,255,0.08) !important; }
+html.dark .border-slate-800 { border-color: rgba(255,255,255,0.10) !important; }
+html.dark .border-slate-900 { border-color: rgba(255,255,255,0.12) !important; }
+html.dark .border-white { border-color: rgba(255,255,255,0.15) !important; }
+html.dark .border-blue-200 { border-color: rgba(59,130,246,0.25) !important; }
+html.dark .border-green-200 { border-color: rgba(34,197,94,0.25) !important; }
+html.dark .border-red-200 { border-color: rgba(239,68,68,0.25) !important; }
+html.dark .border-amber-200 { border-color: rgba(245,158,11,0.25) !important; }
+html.dark .border-purple-200 { border-color: rgba(139,92,246,0.25) !important; }
+html.dark .border-indigo-200 { border-color: rgba(99,102,241,0.25) !important; }
+html.dark .border-pink-200 { border-color: rgba(236,72,153,0.25) !important; }
+html.dark .border-teal-200 { border-color: rgba(20,184,166,0.25) !important; }
+html.dark .border-orange-200 { border-color: rgba(249,115,22,0.25) !important; }
+html.dark .border-emerald-200 { border-color: rgba(16,185,129,0.25) !important; }
+html.dark .border-cyan-200 { border-color: rgba(6,182,212,0.25) !important; }
+html.dark .border-lime-200 { border-color: rgba(132,204,22,0.25) !important; }
+html.dark .border-rose-200 { border-color: rgba(244,63,94,0.25) !important; }
+html.dark .border-sky-200 { border-color: rgba(14,165,233,0.25) !important; }
+html.dark .border-violet-200 { border-color: rgba(139,92,246,0.25) !important; }
+html.dark .border-fuchsia-200 { border-color: rgba(217,70,239,0.25) !important; }
+html.dark .border { border-color: rgba(255,255,255,0.08) !important; }
+
+/* ── Admin page dark backgrounds ──────────────── */
+.admin-page { background: #0b0f1a; min-height: 100vh; color: #e2e8f0; }
+.dark-card    { background-color: #111827; }
+.dark-row     { background-color: #080e22; }
+.dark-row-2   { background-color: #374151; }
+.dark-page-bg { background-color: #0d1117; }
+
+/* ── Admin light mode overrides ──────────────── */
+html:not(.dark) .admin-page {
+  background: #f5f7fa;
+  color: #0f172a;
+}
+
+/* Card / container surfaces */
+html:not(.dark) .admin-page .dark-card,
+html:not(.dark) .dark-card {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+html:not(.dark) .admin-page .dark-row,
+html:not(.dark) .dark-row {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+html:not(.dark) .admin-page .dark-row-2,
+html:not(.dark) .dark-row-2 {
+  background-color: #e2e8f0 !important;
+}
+html:not(.dark) .admin-page .dark-page-bg,
+html:not(.dark) .dark-page-bg {
+  background-color: #f1f5f9 !important;
+}
+
+/* text-white inside admin pages → readable dark text in light mode */
+/* Scoped to .admin-page only — does NOT affect resident pages or colored gradient buttons */
+html:not(.dark) .admin-page .text-white {
+  color: #0f172a !important;
+}
+/* keep-white: gradient cards/buttons — ALL child text stays white. Higher specificity wins. */
+html:not(.dark) .admin-page .keep-white,
+html:not(.dark) .keep-white {
+  color: white !important;
+}
+html:not(.dark) .admin-page .keep-white .text-white,
+html:not(.dark) .keep-white .text-white {
+  color: white !important;
+}
+html:not(.dark) .admin-page .keep-white .text-gray-200,
+html:not(.dark) .admin-page .keep-white .text-gray-300,
+html:not(.dark) .admin-page .keep-white .text-gray-400 {
+  color: rgba(255,255,255,0.85) !important;
+}
+/* text-white/70 and similar opacity variants inside keep-white */
+html:not(.dark) .keep-white [class*="text-white"] {
+  color: rgba(255,255,255,0.85) !important;
+}
+html:not(.dark) .keep-white .text-white {
+  color: white !important;
+}
+
+/* text-gray-200 / text-gray-300 — near-white, invisible on light cards */
+html:not(.dark) .admin-page .text-gray-200,
+html:not(.dark) .text-gray-200 {
+  color: #1f2937 !important;
+}
+html:not(.dark) .admin-page .text-gray-300 {
+  color: #374151 !important;
+}
+
+/* near-invisible white alpha backgrounds → light equivalents */
+html:not(.dark) .admin-page [class*="bg-white\/"],
+html:not(.dark) [class*="bg-white\/"] {
+  --tw-bg-opacity: 1;
+}
+html:not(.dark) .bg-white\/5  { background-color: #f1f5f9 !important; }
+html:not(.dark) .bg-white\/10 { background-color: #e2e8f0 !important; }
+html:not(.dark) .bg-white\/15 { background-color: #dbeafe !important; }
+html:not(.dark) .hover\:bg-white\/10:hover { background-color: #e2e8f0 !important; }
+html:not(.dark) .hover\:bg-white\/12:hover { background-color: #e2e8f0 !important; }
+html:not(.dark) .bg-\[rgba\(255\,255\,255\,0\.03\)\] { background-color: #f8fafc !important; }
+html:not(.dark) .bg-\[rgba\(255\,255\,255\,0\.02\)\] { background-color: #f8fafc !important; }
+html:not(.dark) .bg-\[rgba\(255\,255\,255\,0\.06\)\] { background-color: #f1f5f9 !important; }
+html:not(.dark) .bg-\[rgba\(255\,255\,255\,0\.08\)\] { background-color: #e2e8f0 !important; }
+html:not(.dark) .hover\:bg-\[rgba\(255\,255\,255\,0\.02\)\]:hover { background-color: #f1f5f9 !important; }
+html:not(.dark) .hover\:bg-\[rgba\(255\,255\,255\,0\.03\)\]:hover { background-color: #f1f5f9 !important; }
+html:not(.dark) .hover\:bg-\[rgba\(255\,255\,255\,0\.1\)\]:hover  { background-color: #e2e8f0 !important; }
+
+/* near-invisible white alpha borders → visible light borders */
+html:not(.dark) .border-white\/5,
+html:not(.dark) .border-white\/10,
+html:not(.dark) .border-white\/15,
+html:not(.dark) .border-white\/20,
+html:not(.dark) .border-white\/25 {
+  border-color: #cbd5e1 !important;
+}
+html:not(.dark) .border-\[rgba\(255\,255\,255\,0\.04\)\],
+html:not(.dark) .border-\[rgba\(255\,255\,255\,0\.05\)\],
+html:not(.dark) .border-\[rgba\(255\,255\,255\,0\.06\)\],
+html:not(.dark) .border-\[rgba\(255\,255\,255\,0\.07\)\],
+html:not(.dark) .border-\[rgba\(255\,255\,255\,0\.08\)\],
+html:not(.dark) .border-\[rgba\(255\,255\,255\,0\.1\)\],
+html:not(.dark) .border-\[rgba\(255\,255\,255\,0\.10\)\] {
+  border-color: #e2e8f0 !important;
+}
+
+/* purple-tinted borders in SuperAdmin */
+html:not(.dark) .border-\[rgba\(139\,92\,246\,0\.15\)\],
+html:not(.dark) .border-\[rgba\(139\,92\,246\,0\.2\)\] {
+  border-color: #ddd6fe !important;
+}
+html:not(.dark) .bg-\[rgba\(139\,92\,246\,0\.05\)\] { background-color: #f5f3ff !important; }
+
+/* table hover rows */
+html:not(.dark) .hover\:bg-\[rgba\(255\,255\,255\,0\.03\)\]:hover { background-color: #f8fafc !important; }
+html:not(.dark) .hover\:bg-\[rgba\(139\,92\,246\,0\.04\)\]:hover   { background-color: #f5f3ff !important; }
+html:not(.dark) .hover\:bg-\[rgba\(139\,92\,246\,0\.05\)\]:hover   { background-color: #f5f3ff !important; }
+html:not(.dark) .hover\:bg-\[rgba\(139\,92\,246\,0\.06\)\]:hover   { background-color: #f5f3ff !important; }
+
+/* tab/button inactive text */
+html:not(.dark) .admin-page .text-gray-400 { color: #64748b !important; }
+html:not(.dark) .admin-page .text-gray-500 { color: #4b5563 !important; }
+html:not(.dark) .admin-page .text-gray-600 { color: #374151 !important; }
+
+/* modal close / cancel buttons */
+html:not(.dark) .bg-\[rgba\(255\,255\,255\,0\.06\)\] { background-color: #f1f5f9 !important; color: #374151 !important; }
+html:not(.dark) .text-gray-300.bg-\[rgba\(255\,255\,255\,0\.06\)\] { color: #374151 !important; }
+
+/* Dismiss / secondary buttons with rgba bg */
+html:not(.dark) .text-gray-300 { color: #374151 !important; }
+
+/* inputs inside admin pages */
+html:not(.dark) .admin-page input,
+html:not(.dark) .admin-page select,
+html:not(.dark) .admin-page textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+html:not(.dark) .admin-page input::placeholder,
+html:not(.dark) .admin-page textarea::placeholder { color: #94a3b8 !important; }
+
+/* filter/tab bar */
+html:not(.dark) .admin-page .dark-page-bg { background-color: #f1f5f9 !important; }
+
+/* SuperAdmin inline purple-tinted bg on unselected role cards */
+html:not(.dark) [style*="rgba(255,255,255,0.03)"] { background: #f8fafc !important; }
+html:not(.dark) [style*="rgba(124,58,237,0.12)"] { background: #f5f3ff !important; }
+
+/* Log stream dividers */
+html:not(.dark) .divide-\[rgba\(255\,255\,255\,0\.03\)\] > * + * { border-color: #e2e8f0 !important; }
+
+/* purple log stream service label – too faint on light bg */
+html:not(.dark) .text-purple-400\/70 { color: #7c3aed !important; }
+html:not(.dark) .admin-page .text-purple-400 { color: #7c3aed !important; }
+
+/* Resident pages: gradient cards that stay light in dark mode */
+html.dark .from-green-50  { --tw-gradient-from: rgba(16,185,129,0.15) !important; }
+html.dark .from-green-100 { --tw-gradient-from: rgba(16,185,129,0.20) !important; }
+html.dark .to-green-100   { --tw-gradient-to:   rgba(16,185,129,0.20) !important; }
+html.dark .from-red-50    { --tw-gradient-from: rgba(239,68,68,0.12)  !important; }
+html.dark .to-orange-50   { --tw-gradient-to:   rgba(249,115,22,0.10) !important; }
+
+/* Wallet expanded row: bg-blue-50/60 stays light in dark mode */
+html.dark .bg-blue-50\/60 { background-color: rgba(59,130,246,0.12) !important; }
+
+/* Skeleton shimmer dark mode */
+html.dark .skeleton-shimmer {
+  background: linear-gradient(90deg, #1e293b 25%, #273549 50%, #1e293b 75%);
+  background-size: 200px 100%;
+}
