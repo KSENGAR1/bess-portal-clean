@@ -46,7 +46,7 @@ export default function SuperAdminAPI() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label:'Total Calls Today', val:'1,27,340', from:'#1d4ed8',to:'#1e40af' },
           { label:'Avg Latency',       val:'67ms',      from:'#065f46',to:'#064e3b' },
@@ -105,22 +105,26 @@ export default function SuperAdminAPI() {
           <h2 className="text-base font-bold text-white mb-4">API Keys</h2>
           <div className="space-y-2">
             {API_KEYS.map((k,i) => (
-              <div key={i} className="flex items-center gap-4 p-3 rounded-xl border border-[rgba(255,255,255,0.05)] dark-row">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <p className="text-white font-semibold text-sm">{k.name}</p>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${k.status==='Active'?'bg-emerald-500/20 text-emerald-400':'bg-red-500/20 text-red-400'}`}>{k.status}</span>
+              <div key={i} className="p-3 rounded-xl border border-[rgba(255,255,255,0.05)] dark-row">
+                {/* Info row */}
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                      <p className="text-white font-semibold text-sm">{k.name}</p>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${k.status==='Active'?'bg-emerald-500/20 text-emerald-400':'bg-red-500/20 text-red-400'}`}>{k.status}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-gray-500">
+                      <span>{k.calls.toLocaleString()} calls</span>
+                      <span>Created {k.created}</span>
+                      <span>Last used {k.lastUsed}</span>
+                    </div>
+                    <p className="font-mono text-xs text-purple-400 mt-1 break-all">
+                      {showKey===i ? 'bess_real_key_would_show_here_xxxx' : k.key}
+                    </p>
                   </div>
-                  <div className="flex gap-4 text-xs text-gray-500">
-                    <span>{k.calls.toLocaleString()} calls</span>
-                    <span>Created {k.created}</span>
-                    <span>Last used {k.lastUsed}</span>
-                  </div>
-                  <p className="font-mono text-xs text-purple-400 mt-0.5">
-                    {showKey===i ? 'bess_real_key_would_show_here_xxxx' : k.key}
-                  </p>
                 </div>
-                <div className="flex gap-2">
+                {/* Action buttons */}
+                <div className="flex flex-wrap gap-2">
                   <button onClick={() => setShowKey(showKey===i?null:i)} className="px-3 py-1.5 text-xs font-bold text-gray-400 border border-[rgba(255,255,255,0.08)] rounded-lg hover:text-white transition-all">{showKey===i?'Hide':'Show'}</button>
                   <button onClick={() => { navigator.clipboard?.writeText(k.key); addToast('Key copied!', 'success') }} className="px-3 py-1.5 text-xs font-bold text-purple-400 border border-purple-500/30 rounded-lg hover:bg-purple-500/10 transition-all">Copy</button>
                   {k.status === 'Active' && <button onClick={() => addToast(`${k.name} key rotated!`, 'success')} className="px-3 py-1.5 text-xs font-bold text-amber-400 border border-amber-500/30 rounded-lg hover:bg-amber-500/10 transition-all">Rotate</button>}
