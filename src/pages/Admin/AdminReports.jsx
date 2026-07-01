@@ -33,7 +33,7 @@ export default function AdminReports() {
 
   const generate = type => {
     setGenerating(type)
-    setTimeout(() => { setGenerating(null); addToast(`${type} generated & ready to download!`, 'success') }, 1800, 'success')
+    setTimeout(() => { setGenerating(null); addToast(`${type} generated & ready to download!`, 'success') }, 1800)
   }
 
   const exportCSV = (data, filename, headers) => {
@@ -155,7 +155,7 @@ export default function AdminReports() {
                 <p className="text-white font-semibold text-sm truncate">{r.name}</p>
                 <p className="text-gray-500 text-xs">{r.type} · {r.date} · {r.size}</p>
               </div>
-              <button onClick={()=>addToast(`Downloading ${r.name}…`, 'info', 'success')}
+              <button onClick={()=>addToast(`Downloading ${r.name}…`, 'info')}
                       className="px-3 py-1.5 rounded-xl text-xs font-bold text-blue-400 bg-blue-900/20 border border-blue-700/30 hover:bg-blue-900/30 transition-all flex-shrink-0">
                 ↓ Download
               </button>

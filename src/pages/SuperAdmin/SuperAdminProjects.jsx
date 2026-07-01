@@ -58,9 +58,12 @@ export default function SuperAdminProjects() {
   }
 
   const toggleStatus = (id) => {
-    setProjects(prev => prev.map(p => p.id === id ? { ...p, status: p.status==='Active'?'Inactive':'Active' } : p))
-    const p = projects.find(x => x.id === id)
-    addToast(`${p.status==='Active'?'⛔ Deactivated':'✅ Activated'}: ${p.name}`, 'success')
+    setProjects(prev => {
+      const updated = prev.map(p => p.id === id ? { ...p, status: p.status === 'Active' ? 'Inactive' : 'Active' } : p)
+      const p = updated.find(x => x.id === id)
+      addToast(`${p.status === 'Active' ? '✅ Activated' : '⛔ Deactivated'}: ${p.name}`, 'success')
+      return updated
+    })
     setDetail(null)
   }
 

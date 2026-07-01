@@ -25,7 +25,7 @@ export default function SuperAdminFirmware() {
 
   const push = proj => {
     setPushing(proj)
-    setTimeout(() => { setPushing(null); addToast(`Firmware v2.3.1 queued for ${proj}`, 'success') }, 1500, 'success')
+    setTimeout(() => { setPushing(null); addToast(`Firmware v2.3.1 queued for ${proj}`, 'success') }, 1500)
   }
 
   const CARD = 'rounded-2xl p-5 border dark-card border-[rgba(255,255,255,0.06)]'
@@ -38,7 +38,7 @@ export default function SuperAdminFirmware() {
           <h1 className="text-2xl font-bold text-white">Firmware Management</h1>
           <p className="text-gray-400 text-sm mt-0.5">OTA updates for all smart meters</p>
         </div>
-        <button onClick={() => addToast('Upload new firmware version (demo)', 'info', 'success')}
+        <button onClick={() => addToast('Upload new firmware version (demo)', 'info')}
                 className="px-5 py-2 rounded-xl font-bold text-sm text-white"
                 style={{ background: 'linear-gradient(135deg,#7c3aed,#4f46e5)' }}>
           Upload Firmware

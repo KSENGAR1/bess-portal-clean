@@ -103,6 +103,44 @@ export default function SuperAdminOrganizations() {
         </div>
       </div>
 
+      {/* Detail drawer */}
+      {selected && (() => {
+        const org = ORGS.find(o => o.id === selected)
+        if (!org) return null
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/50" onClick={() => setSelected(null)}>
+            <div className="h-full w-full max-w-sm dark-card border-l border-[rgba(139,92,246,0.3)] p-6 space-y-4 overflow-y-auto" onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-white">{org.name}</h3>
+                <button onClick={() => setSelected(null)} className="text-gray-400 hover:text-white text-xl">×</button>
+              </div>
+              <span className={`px-3 py-1 rounded-lg text-xs font-bold border ${org.status === 'Active' ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'bg-gray-500/20 text-gray-400 border-gray-500/30'}`}>
+                {org.status}
+              </span>
+              <div className="space-y-2">
+                {[['City', org.city], ['Projects', org.projects], ['Meters', org.meters], ['Admins', org.admins], ['Revenue', `${sym}${org.revenue}`], ['Member Since', org.since]].map(([k, v]) => (
+                  <div key={k} className="flex justify-between py-2 border-b border-[rgba(255,255,255,0.05)]">
+                    <span className="text-gray-400 text-xs">{k}</span>
+                    <span className="text-gray-200 text-xs font-semibold">{v}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-col gap-2 pt-2">
+                <button onClick={() => { addToast(`Viewing details for ${org.name}`, 'success'); setSelected(null) }}
+                        className="w-full py-2.5 rounded-xl text-sm font-bold text-white"
+                        style={{ background: 'linear-gradient(135deg,#7c3aed,#4f46e5)' }}>
+                  View Full Details
+                </button>
+                <button onClick={() => setSelected(null)}
+                        className="w-full py-2.5 rounded-xl text-sm font-bold text-gray-300 bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)]">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )
+      })()}
+
       {/* Add modal */}
       {showAdd && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={()=>setShowAdd(false)}>

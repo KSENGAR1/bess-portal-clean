@@ -41,7 +41,7 @@ export default function AdminBilling() {
 
   const handleReminder = flat => {
     setSending(flat)
-    setTimeout(() => { setSending(null); addToast(`Reminder sent to ${flat}`, 'success') }, 1200, 'success')
+    setTimeout(() => { setSending(null); addToast(`Reminder sent to ${flat}`, 'success') }, 1200)
   }
 
   const CARD = 'rounded-2xl p-5 border dark-card border-[rgba(255,255,255,0.06)]'
@@ -60,7 +60,7 @@ export default function AdminBilling() {
                   style={{ background:'linear-gradient(135deg,#d97706,#b45309)' }}>
             ⚡ Generate Bills
           </button>
-          <button onClick={()=>addToast('Report downloaded', 'info', 'success')}
+          <button onClick={()=>addToast('Report downloaded', 'success')}
                   className="px-4 py-2 rounded-xl font-bold text-sm text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-[rgba(255,255,255,0.06)] hover:bg-gray-200 dark:hover:bg-[rgba(255,255,255,0.1)] border border-gray-200 dark:border-[rgba(255,255,255,0.08)] transition-all">
             ↓ Export
           </button>

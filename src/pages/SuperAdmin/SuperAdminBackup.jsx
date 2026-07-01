@@ -16,7 +16,7 @@ export default function SuperAdminBackup() {
 
   const triggerBackup = () => {
     setRunning(true)
-    setTimeout(() => { setRunning(false); addToast('Manual backup completed successfully!', 'success') }, 2500, 'success')
+    setTimeout(() => { setRunning(false); addToast('Manual backup completed successfully!', 'success') }, 2500)
   }
 
   const CARD = 'rounded-2xl p-5 border dark-card border-[rgba(255,255,255,0.06)]'
@@ -81,18 +81,18 @@ export default function SuperAdminBackup() {
               <div className="flex gap-2 flex-shrink-0">
                 {b.status === 'Success' && (
                   <>
-                    <button onClick={() => addToast(`Downloading ${b.name}…`, 'info', 'success')}
+                    <button onClick={() => addToast(`Downloading ${b.name}…`, 'info')}
                             className="px-3 py-1.5 text-xs font-bold text-purple-400 border border-purple-500/30 rounded-lg hover:bg-purple-500/10 transition-all">
                       Download
                     </button>
-                    <button onClick={() => addToast(`Restore initiated from ${b.date}`, 'info', 'success')}
+                    <button onClick={() => addToast(`Restore initiated from ${b.date}`, 'info')}
                             className="px-3 py-1.5 text-xs font-bold text-amber-400 border border-amber-500/30 rounded-lg hover:bg-amber-500/10 transition-all">
                       Restore
                     </button>
                   </>
                 )}
                 {b.status === 'Failed' && (
-                  <button onClick={() => addToast('Retry queued', 'info', 'success')}
+                  <button onClick={() => addToast('Retry queued', 'info')}
                           className="px-3 py-1.5 text-xs font-bold text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500/10 transition-all">
                     Retry
                   </button>
