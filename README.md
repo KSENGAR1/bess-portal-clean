@@ -186,3 +186,4 @@ This demo is for educational and evaluation purposes.
 **Made with ⚡ for Smart Energy Management**
 
 Built with React, Vite, and Tailwind CSS
+hi
