@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { User, Mail, Phone, MapPin, Home, Users, Bell, Shield, LogOut, ChevronRight, Edit3, Check, X } from 'lucide-react'
 import { useCurrency } from '../context/CurrencyContext'
+import { useToast } from '../components/ToastProvider'
 
 const TABS = [
   { id:'profile',  label:'Profile',       Icon: User },
@@ -43,7 +44,7 @@ export default function ProfilePage({ onNavigate }) {
   const sym = country.symbol
   const [tab, setTab]           = useState('profile')
   const [isEditing, setEditing] = useState(false)
-  const [toast, setToast]       = useState('')
+  const { addToast } = useToast()
   const [info, setInfo]         = useState({
     name:'Rajesh Kumar', email:'rajesh.kumar@email.com',
     phone:'+91 9876543210', city:'Mumbai',
@@ -53,8 +54,7 @@ export default function ProfilePage({ onNavigate }) {
     lowBalance:true, invoiceReady:true, paymentDone:true, notices:false, meterAlert:true
   })
 
-  const showToast = msg => { setToast(msg); setTimeout(() => setToast(''), 3000) }
-  const saveEdit  = () => { setInfo({...draft}); setEditing(false); showToast('✅ Profile updated') }
+  const saveEdit  = () => { setInfo({...draft}); setEditing(false); addToast('Profile updated', 'success') }
   const cancelEdit = () => { setDraft({...info}); setEditing(false) }
 
   const flat = { flatNumber:'302', tower:'Tower A', society:'Galaxy Apartments', type:'Self Occupied', since:'Jan 2023' }
@@ -65,14 +65,6 @@ export default function ProfilePage({ onNavigate }) {
 
   return (
     <div className="max-w-xl mx-auto px-4 py-6 pb-28 animate-fade-in">
-
-      {/* Toast */}
-      {toast && (
-        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl text-sm font-semibold text-white shadow-2xl animate-slide-up"
-             style={{background:'linear-gradient(135deg,#059669,#047857)'}}>
-          {toast}
-        </div>
-      )}
 
       {/* Avatar header */}
       <div className="flex items-center gap-4 mb-6 p-5 bg-white rounded-2xl shadow-card border border-gray-100">
@@ -154,7 +146,7 @@ export default function ProfilePage({ onNavigate }) {
               ))}
             </div>
             <div className="px-5 pb-5">
-              <button onClick={()=>showToast('📍 Edit flat details (demo)')}
+              <button onClick={()=>addToast('📍 Edit flat details (demo)', 'success')}
                       className="w-full py-2.5 rounded-xl border-2 border-blue-200 text-blue-700 text-sm font-bold hover:bg-blue-50 transition-all flex items-center justify-center gap-2">
                 <Edit3 size={14}/> Edit Flat Details
               </button>
@@ -168,7 +160,7 @@ export default function ProfilePage({ onNavigate }) {
             </div>
             <div className="p-4 space-y-2">
               {otherFlats.map(f=>(
-                <button key={f.n} onClick={()=>showToast(`Switched to Flat ${f.n} (demo)`)}
+                <button key={f.n} onClick={()=>addToast(`Switched to Flat ${f.n} (demo)`, 'info')}
                         className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-all text-left">
                   <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-xs font-black text-blue-700 flex-shrink-0">
                     {f.n}
@@ -180,7 +172,7 @@ export default function ProfilePage({ onNavigate }) {
                   <span className="text-xs font-bold text-blue-600">Switch <ChevronRight size={12} className="inline"/></span>
                 </button>
               ))}
-              <button onClick={()=>showToast('Register new flat (demo)')}
+              <button onClick={()=>addToast('Register new flat (demo)', 'success')}
                       className="w-full py-2.5 rounded-xl border-2 border-dashed border-gray-200 text-gray-500 text-sm font-semibold hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50 transition-all flex items-center justify-center gap-1.5">
                 <span className="text-lg leading-none">+</span> Register New Flat
               </button>
@@ -202,9 +194,9 @@ export default function ProfilePage({ onNavigate }) {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button onClick={()=>showToast('Edit tenant (demo)')}
+                <button onClick={()=>addToast('Edit tenant (demo)', 'success')}
                         className="flex-1 py-2 rounded-xl border border-gray-200 text-gray-700 text-xs font-bold hover:bg-gray-50 transition-all">Edit</button>
-                <button onClick={()=>showToast('Remove tenant (demo)')}
+                <button onClick={()=>addToast('Remove tenant (demo)', 'success')}
                         className="flex-1 py-2 rounded-xl border border-red-200 text-red-600 text-xs font-bold hover:bg-red-50 transition-all">Remove</button>
               </div>
             </div>
@@ -253,7 +245,7 @@ export default function ProfilePage({ onNavigate }) {
                 { Icon:Users,  label:'Active Sessions',           sub:'View and manage login sessions',        action:'💻 2 active sessions (demo)' },
                 { Icon:Shield, label:'Download Audit Log',        sub:'All account activity history',          action:'📥 Audit log downloaded (demo)' },
               ].map(item => (
-                <button key={item.label} onClick={() => showToast(item.action)}
+                <button key={item.label} onClick={() => addToast(item.action, 'info')}
                         className="w-full flex items-center gap-3 px-5 py-4 hover:bg-gray-50 transition-all text-left">
                   <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
                     <item.Icon size={15} className="text-blue-600"/>
@@ -272,11 +264,11 @@ export default function ProfilePage({ onNavigate }) {
           <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
             <p className="text-sm font-bold text-red-800 mb-3">Danger Zone</p>
             <div className="flex gap-2">
-              <button onClick={()=>showToast('Password changed (demo)')}
+              <button onClick={()=>addToast('Password changed (demo)', 'success')}
                       className="flex-1 py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold hover:bg-red-700 transition-all">
                 Reset Password
               </button>
-              <button onClick={()=>showToast('Logged out everywhere (demo)')}
+              <button onClick={()=>addToast('Logged out everywhere (demo)', 'success')}
                       className="flex-1 py-2.5 rounded-xl border-2 border-red-300 text-red-700 text-xs font-bold hover:bg-red-100 transition-all">
                 Logout All Devices
               </button>

@@ -14,6 +14,7 @@ const ORGS = [
 export default function SuperAdminOrganizations() {
   const { country } = useCurrency()
   const sym = country.symbol
+  const { addToast } = useToast()
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState(null)
   const [showAdd, setShowAdd] = useState(false)
@@ -114,7 +115,7 @@ export default function SuperAdminOrganizations() {
               </div>
             ))}
             <div className="flex gap-3 pt-2">
-              <button onClick={()=>{addToast('✅ Organization added!', 'success');setShowAdd(false, 'success')}}
+              <button onClick={()=>{addToast('✅ Organization added!', 'success');setShowAdd(false)}}
                       className="flex-1 py-2.5 rounded-xl font-bold text-sm text-white"
                       style={{background:'linear-gradient(135deg,#7c3aed,#4f46e5)'}}>Add</button>
               <button onClick={()=>setShowAdd(false)}

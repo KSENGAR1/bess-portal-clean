@@ -14,12 +14,6 @@ export default function SuperAdminRoles() {
 
   return (
     <div className="admin-page p-6 space-y-5 animate-fade-in">
-      {toast && (
-        <div className="fixed top-20 right-6 z-50 px-5 py-3 rounded-2xl text-sm font-semibold text-white shadow-2xl animate-slide-up"
-             style={{background:'linear-gradient(135deg,#065f46,#047857)'}}>
-          {toast}
-        </div>
-      )}
 
       <div className="flex items-center justify-between">
         <div>

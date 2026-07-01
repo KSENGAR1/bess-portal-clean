@@ -7,6 +7,7 @@ const PROJECTS = ['ABC Residency','XYZ Towers','Elite Heights','Green Valley','P
 export default function SuperAdminTariff() {
   const { country } = useCurrency()
   const sym = country.symbol
+  const { addToast } = useToast()
   const [selectedProject, setSelectedProject] = useState('ABC Residency')
   const [tariffs, setTariffs] = useState({
     'ABC Residency': { grid:'10.50', dg:'42.00', fixed:'250', gst:'18', lateFee:'5', freeUnits:'0' },
