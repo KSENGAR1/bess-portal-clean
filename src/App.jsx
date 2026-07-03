@@ -132,10 +132,16 @@ export default function App() {
   const [userRole, setUserRole] = useState('resident')
   const { markAllRead } = useNotifications()
   const [dark, setDark] = useState(() => localStorage.getItem('bess_dark') !== 'false')
+  const [showDemoBanner, setShowDemoBanner] = useState(() => localStorage.getItem('bess_hide_demo_banner') !== 'true')
 
   // Shared wallet balance — updated when payment succeeds
   const [walletBalance, setWalletBalance] = useState(2450.50)
   const addToWallet = (amount) => setWalletBalance(prev => +(prev + amount).toFixed(2))
+
+  const hideDemoBanner = () => {
+    setShowDemoBanner(false)
+    localStorage.setItem('bess_hide_demo_banner', 'true')
+  }
 
   const toggleDark = () => setDark(d => {
     localStorage.setItem('bess_dark', String(!d))
@@ -232,8 +238,27 @@ export default function App() {
 
   const pageName = PAGE_NAMES[currentPage] || 'Dashboard'
 
+  const DemoBanner = () => !showDemoBanner ? null : (
+    <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white px-4 py-2.5 shadow-lg">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <span className="text-lg animate-pulse">🎭</span>
+          <div className="min-w-0">
+            <p className="font-bold text-sm">Demo Mode</p>
+            <p className="text-xs text-white/90 truncate">All data is simulated for demonstration purposes</p>
+          </div>
+        </div>
+        <button onClick={hideDemoBanner}
+                className="flex-shrink-0 px-3 py-1 text-xs font-bold bg-white/20 hover:bg-white/30 rounded-lg transition-all backdrop-blur-sm border border-white/30">
+          Dismiss
+        </button>
+      </div>
+    </div>
+  )
+
   return (
     <ToastProvider>
+      <DemoBanner />
       {userRole === 'superadmin' && (
         <SidebarLayout
           currentPage={currentPage}
@@ -247,7 +272,9 @@ export default function App() {
           searchMap={SEARCH_MAP}
           theme="purple"
         >
-          {renderPage()}
+          <div className={showDemoBanner ? 'pt-14' : ''}>
+            {renderPage()}
+          </div>
         </SidebarLayout>
       )}
 
@@ -264,7 +291,9 @@ export default function App() {
           searchMap={SEARCH_MAP}
           theme="amber"
         >
-          {renderPage()}
+          <div className={showDemoBanner ? 'pt-14' : ''}>
+            {renderPage()}
+          </div>
         </SidebarLayout>
       )}
 
@@ -276,7 +305,9 @@ export default function App() {
           onToggleDark={toggleDark}
           onLogout={handleLogout}
         >
-          {renderPage()}
+          <div className={showDemoBanner ? 'pt-14' : ''}>
+            {renderPage()}
+          </div>
         </ResidentLayout>
       )}
     </ToastProvider>
