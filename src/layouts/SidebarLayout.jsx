@@ -22,6 +22,8 @@ export default function SidebarLayout({
   const { unreadCount } = useNotifications()
   const [searchQuery, setSearchQuery] = useState('')
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [suggestions, setSuggestions] = useState([])
 
   const isSuperAdmin = userRole === 'superadmin'
   const themeColor = theme === 'purple' ? 'purple' : 'amber'
@@ -31,13 +33,44 @@ export default function SidebarLayout({
     : 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300'
   const activeNavClass = theme === 'purple' ? 'nav-active-purple' : 'nav-active-amber'
 
-  const handleSearch = (q) => {
-    const lower = q.toLowerCase().trim()
-    if (!lower) return
-    const match = searchMap.find(m => m.q.some(k => lower.includes(k)))
-    if (match) onNavigate(match.page)
-    setSearchQuery('')
+  // Build page name map from navItems
+  const pageNameMap = {}
+  navItems.forEach(item => {
+    if (item.page && item.label) {
+      pageNameMap[item.page] = item.label
+    }
+  })
+
+  const handleSearch = (page) => {
+    if (page) {
+      onNavigate(page)
+      setSearchQuery('')
+      setShowSuggestions(false)
+    }
   }
+
+  // Update suggestions as user types
+  useEffect(() => {
+    const lower = searchQuery.toLowerCase().trim()
+    if (!lower) {
+      setSuggestions([])
+      setShowSuggestions(false)
+      return
+    }
+
+    // Find matching pages
+    const matches = searchMap
+      .filter(m => m.q.some(k => k.includes(lower)))
+      .slice(0, 6) // Limit to 6 suggestions
+      .map(m => ({
+        page: m.page,
+        label: pageNameMap[m.page] || m.page,
+        matchedKeyword: m.q.find(k => k.includes(lower))
+      }))
+
+    setSuggestions(matches)
+    setShowSuggestions(matches.length > 0)
+  }, [searchQuery, searchMap, pageNameMap])
 
   // Close mobile sidebar on route change
   useEffect(() => {
@@ -167,16 +200,48 @@ export default function SidebarLayout({
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Search */}
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mr-1">
-              <Search size={13} className="text-slate-400 dark:text-slate-500" />
-              <input
-                placeholder="Quick search…"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
-                className="bg-transparent text-xs placeholder-slate-400 dark:placeholder-slate-500 outline-none w-32 text-slate-700 dark:text-slate-300"
-              />
+            {/* Search with suggestions */}
+            <div className="hidden sm:block relative mr-1">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <Search size={13} className="text-slate-400 dark:text-slate-500" />
+                <input
+                  placeholder="Quick search…"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && suggestions.length > 0) {
+                      handleSearch(suggestions[0].page)
+                    } else if (e.key === 'Escape') {
+                      setShowSuggestions(false)
+                    }
+                  }}
+                  onFocus={() => searchQuery && suggestions.length > 0 && setShowSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  className="bg-transparent text-xs placeholder-slate-400 dark:placeholder-slate-500 outline-none w-32 text-slate-700 dark:text-slate-300"
+                />
+              </div>
+
+              {/* Suggestions dropdown */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-full mt-1 left-0 right-0 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl overflow-hidden z-50 animate-fade-in">
+                  {suggestions.map((s, i) => (
+                    <button
+                      key={s.page}
+                      onClick={() => handleSearch(s.page)}
+                      className={`w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ${
+                        i === 0 ? 'bg-slate-50 dark:bg-slate-750' : ''
+                      }`}
+                    >
+                      <p className="text-xs font-semibold text-slate-900 dark:text-white">
+                        {s.label}
+                      </p>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                        Match: {s.matchedKeyword}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Dark mode toggle */}
