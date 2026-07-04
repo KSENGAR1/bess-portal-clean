@@ -320,7 +320,7 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
 
       {/* ── Right panel — glass card form ── */}
       <div className="relative z-10 w-full lg:w-[480px] flex-shrink-0 flex items-center justify-center p-6 lg:p-10">
-        <div className="w-full max-w-sm rounded-3xl p-8 transition-all duration-500"
+        <div className="w-full max-w-sm rounded-3xl p-6 sm:p-8 transition-all duration-500"
              style={{
                background: T.card,
                backdropFilter: 'blur(28px)',
@@ -379,15 +379,15 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
                 <form onSubmit={e => { e.preventDefault(); handleSendOTP() }} className="space-y-4">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wide mb-2" style={{ color: T.label }}>Mobile Number</label>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 min-w-0">
                       {/* Country dial code dropdown */}
-                      <div className="relative">
+                      <div className="relative flex-shrink-0">
                         <button type="button" onClick={() => setShowDialDrop(d => !d)}
-                                className="flex items-center gap-1.5 px-3 py-3 rounded-xl text-sm font-bold h-full whitespace-nowrap"
+                                className="flex items-center gap-1 px-2.5 py-3 rounded-xl text-sm font-bold whitespace-nowrap"
                                 style={{ background: T.input, border: `1px solid ${T.inputBorder}`, color: T.text }}>
                           <span>{country.flag}</span>
-                          <span>{country.dialCode}</span>
-                          <ChevronDown size={12} style={{ color: T.label }}/>
+                          <span className="text-xs">{country.dialCode}</span>
+                          <ChevronDown size={11} style={{ color: T.label }}/>
                         </button>
                         {showDialDrop && (
                           <>
@@ -423,7 +423,7 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
                       <input type="tel" maxLength={country.maxLen} value={phone}
                              onChange={e => setPhone(e.target.value.replace(/\D/g, ''))}
                              placeholder={'0'.repeat(country.maxLen)}
-                             className="flex-1 px-4 py-3 rounded-xl text-sm outline-none transition-all"
+                             className="flex-1 min-w-0 px-3 py-3 rounded-xl text-sm outline-none transition-all"
                              style={{ background: T.input, border: `1px solid ${T.inputBorder}`, color: T.text }}
                              onFocus={e => e.target.style.borderColor = 'rgba(99,102,241,0.7)'}
                              onBlur={e => e.target.style.borderColor = T.inputBorder}/>
