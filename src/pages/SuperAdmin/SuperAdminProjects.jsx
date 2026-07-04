@@ -84,7 +84,7 @@ export default function SuperAdminProjects() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label:'Total Projects', val:projects.length,                                    from:'#1d4ed8',to:'#1e40af' },
           { label:'Active',         val:projects.filter(p=>p.status==='Active').length,     from:'#065f46',to:'#064e3b' },

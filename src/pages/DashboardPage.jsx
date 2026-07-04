@@ -228,7 +228,7 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-3 gap-2 mb-6">
         <StatCard label="This Month" value="287 kWh" sub="+12% vs last" subColor="text-orange-500" accent="border-orange-400" trend={usageTrend} trendColor="#f97316" />
         <StatCard label="Spent" value={`${sym}${monthlySpend.toFixed(0)}`}
           sub={`${spendingChange > 0 ? '↑' : '↓'} ${Math.abs(spendingChange)}%`}

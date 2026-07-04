@@ -55,7 +55,7 @@ export default function SuperAdminMonitoring() {
       </div>
 
       {/* Live vitals */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
           { label:'CPU Usage',    value:`${cpu}%`,  icon:'⚙️', from: cpu>75?'#991b1b':'#1d4ed8', to: cpu>75?'#7f1d1d':'#1e40af', warn: cpu>75 },
           { label:'Memory',       value:`${mem}%`,  icon:'🧠', from: mem>80?'#92400e':'#065f46', to: mem>80?'#78350f':'#064e3b', warn: mem>80 },

@@ -53,7 +53,7 @@ export default function AdminAlerts() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
           { label:'Critical',       value: critCount, from:'#991b1b', to:'#7f1d1d', icon:'🚨' },
           { label:'High Priority',  value: highCount,  from:'#9a3412', to:'#7c2d12', icon:'⚠️' },

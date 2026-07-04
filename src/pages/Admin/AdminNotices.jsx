@@ -58,7 +58,7 @@ export default function AdminNotices() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
           { label:'Total Sent',  value: notices.length,                             from:'#1d4ed8',to:'#1e40af' },
           { label:'This Month',  value: notices.filter(n=>n.date.startsWith('2024-06')).length, from:'#065f46',to:'#064e3b' },
@@ -103,7 +103,7 @@ export default function AdminNotices() {
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-400 mb-1">Notice Type</label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {['General','Alert','Mandatory'].map(t => (
                     <button key={t} onClick={()=>setForm({...form,type:t})}
                             className={`py-2 rounded-xl text-xs font-bold border transition-all ${

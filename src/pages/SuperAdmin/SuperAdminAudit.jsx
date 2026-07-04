@@ -54,7 +54,7 @@ export default function SuperAdminAudit() {
       </div>
 
       {/* Severity stats */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[['Critical','#ef4444'],['High','#f97316'],['Medium','#eab308'],['Low','#3b82f6']].map(([s,c])=>(
           <div key={s} className="rounded-2xl p-4 border dark-card border-[rgba(255,255,255,0.06)]">
             <p className="text-xs font-bold mb-1" style={{color:c}}>{s}</p>
@@ -68,7 +68,7 @@ export default function SuperAdminAudit() {
           <input value={search} onChange={e=>setSearch(e.target.value)}
                  placeholder="Search action, user, module…"
                  className="flex-1 min-w-[200px] px-3 py-2 rounded-xl dark-page-bg border border-[rgba(255,255,255,0.1)] text-white text-sm focus:outline-none focus:border-purple-500"/>
-          <div className="flex gap-1 p-1 rounded-xl dark-page-bg border border-[rgba(255,255,255,0.06)]">
+          <div className="flex gap-1 p-1 rounded-xl dark-page-bg border border-[rgba(255,255,255,0.06)] flex-wrap">
             {['All','Critical','High','Medium','Low'].map(s=>(
               <button key={s} onClick={()=>setSevFilter(s)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${sevFilter===s?'bg-purple-700 text-white':'text-gray-400 hover:text-white'}`}>{s}</button>

@@ -43,7 +43,7 @@ export default function SuperAdminUsers() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
           {label:'Active', value:USERS.filter(u=>u.status==='Active').length, from:'#065f46',to:'#064e3b'},
           {label:'Inactive',value:USERS.filter(u=>u.status==='Inactive').length,from:'#92400e',to:'#78350f'},
@@ -61,7 +61,7 @@ export default function SuperAdminUsers() {
           <input value={search} onChange={e=>setSearch(e.target.value)}
                  placeholder="Search name, flat, org…"
                  className="flex-1 min-w-[200px] px-3 py-2 rounded-xl dark-page-bg border border-[rgba(255,255,255,0.1)] text-white text-sm focus:outline-none focus:border-purple-500"/>
-          <div className="flex gap-1 p-1 rounded-xl dark-page-bg border border-[rgba(255,255,255,0.06)]">
+          <div className="flex gap-1 p-1 rounded-xl dark-page-bg border border-[rgba(255,255,255,0.06)] flex-wrap">
             {['All','Active','Inactive','Suspended'].map(s=>(
               <button key={s} onClick={()=>setStatusFilter(s)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${statusFilter===s?'bg-purple-700 text-white':'text-gray-400 hover:text-white'}`}>{s}</button>

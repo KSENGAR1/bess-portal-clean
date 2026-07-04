@@ -100,7 +100,7 @@ export default function AdminSettings() {
             <Input label="Contact Email" type="email" value={general.email} onChange={e=>setGeneral({...general,email:e.target.value})} />
             <Input label="Contact Phone" value={general.phone} onChange={e=>setGeneral({...general,phone:e.target.value})} />
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-semibold text-gray-400 mb-1">Billing Frequency</label>
               <select value={general.billFrequency} onChange={e=>setGeneral({...general,billFrequency:e.target.value})}

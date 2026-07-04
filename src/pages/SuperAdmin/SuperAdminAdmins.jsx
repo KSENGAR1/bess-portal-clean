@@ -56,7 +56,7 @@ export default function SuperAdminAdmins() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
           { label:'Total Admins', value: admins.length,                             from:'#1d4ed8',to:'#1e40af' },
           { label:'Active',       value: admins.filter(a=>a.status==='Active').length, from:'#065f46',to:'#064e3b' },

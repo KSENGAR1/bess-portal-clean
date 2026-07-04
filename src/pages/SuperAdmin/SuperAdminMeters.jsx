@@ -69,7 +69,7 @@ export default function SuperAdminMeters() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: 'Online',  val: METERS.filter(m=>m.status==='Online').length,  from:'#065f46', to:'#064e3b' },
           { label: 'Offline', val: METERS.filter(m=>m.status==='Offline').length, from:'#991b1b', to:'#7f1d1d' },

@@ -45,7 +45,7 @@ export default function SuperAdminBilling() {
       </div>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
           { label:'Total Billed',    val:`${sym}${(totalBilled/100000).toFixed(1)}L`,    from:'#1d4ed8',to:'#1e40af' },
           { label:'Collected',       val:`${sym}${(totalCollected/100000).toFixed(1)}L`, from:'#065f46',to:'#064e3b' },

@@ -78,7 +78,7 @@ export default function SuperAdminBackup() {
                   ))}
                 </div>
               </div>
-              <div className="flex gap-2 flex-shrink-0">
+              <div className="flex gap-2 flex-shrink-0 flex-wrap justify-end">
                 {b.status === 'Success' && (
                   <>
                     <button onClick={() => addToast(`Downloading ${b.name}…`, 'info')}

@@ -46,7 +46,7 @@ export default function SuperAdminFirmware() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {[
           { label:'On Latest (v2.3.1)', val: VERSIONS[0].meters.toLocaleString(), from:'#065f46',to:'#064e3b' },
           { label:'Pending Update',     val: PROJECTS.reduce((a,b)=>a+b.pending,0), from:'#92400e',to:'#78350f' },

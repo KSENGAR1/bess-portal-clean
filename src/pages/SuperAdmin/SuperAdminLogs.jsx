@@ -43,7 +43,7 @@ export default function SuperAdminLogs() {
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[['ERROR',LOGS.filter(l=>l.level==='ERROR').length,'#991b1b','#7f1d1d'],
           ['WARN', LOGS.filter(l=>l.level==='WARN').length, '#92400e','#78350f'],
           ['INFO', LOGS.filter(l=>l.level==='INFO').length, '#1d4ed8','#1e40af'],

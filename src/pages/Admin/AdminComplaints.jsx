@@ -52,7 +52,7 @@ export default function AdminComplaints() {
         <p className="text-gray-400 text-sm mt-0.5">Track and resolve consumer complaints</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {stats.map(s => (
           <div key={s.label} className="rounded-2xl p-4 relative overflow-hidden keep-white"
                style={{ background:`linear-gradient(135deg,${s.from},${s.to})` }}>
