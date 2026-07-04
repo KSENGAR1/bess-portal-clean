@@ -198,7 +198,7 @@ export default function MeterPage() {
       {/* Power source toggle */}
       <div className="bg-white rounded-2xl p-5 mb-6 shadow-card border border-gray-100">
         <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3">Active Power Source</p>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           {[
             {id:'grid',label:'Grid (Mains)',desc:'BESCOM Supply',color:'#0066FF',status:'Online'},
             {id:'dg',  label:'DG Generator',desc:'Diesel Backup', color:'#f59e0b',status:'Standby'},
@@ -210,11 +210,11 @@ export default function MeterPage() {
                    style={{background:`${src.color}18`}}>
                 <Zap size={16} style={{color:src.color}}/>
               </div>
-              <div className="text-left min-w-0">
+              <div className="text-left flex-1 min-w-0">
                 <p className="text-xs font-bold text-gray-900 truncate">{src.label}</p>
                 <p className="text-[10px] text-gray-500 truncate">{src.desc}</p>
               </div>
-              <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${src.status==='Online'?'bg-green-100 text-green-700':'bg-gray-100 text-gray-500'}`}>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${src.status==='Online'?'bg-green-100 text-green-700':'bg-gray-100 text-gray-500'}`}>
                 {src.status}
               </span>
             </button>
