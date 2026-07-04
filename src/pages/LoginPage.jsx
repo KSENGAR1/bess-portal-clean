@@ -319,8 +319,8 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
       </div>
 
       {/* ── Right panel — glass card form ── */}
-      <div className="relative z-10 w-full lg:w-[480px] flex-shrink-0 flex items-center justify-center p-6 lg:p-10">
-        <div className="w-full max-w-sm rounded-3xl p-6 sm:p-8 transition-all duration-500"
+      <div className="relative z-10 w-full lg:w-[480px] flex-shrink-0 flex items-center justify-center p-4 sm:p-6 lg:p-10 overflow-hidden">
+        <div className="w-full max-w-sm rounded-3xl p-6 sm:p-8 transition-all duration-500 overflow-hidden"
              style={{
                background: T.card,
                backdropFilter: 'blur(28px)',
@@ -379,7 +379,7 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
                 <form onSubmit={e => { e.preventDefault(); handleSendOTP() }} className="space-y-4">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wide mb-2" style={{ color: T.label }}>Mobile Number</label>
-                    <div className="flex gap-2 min-w-0">
+                    <div className="flex gap-2 w-full">
                       {/* Country dial code dropdown */}
                       <div className="relative flex-shrink-0">
                         <button type="button" onClick={() => setShowDialDrop(d => !d)}
@@ -423,7 +423,7 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
                       <input type="tel" maxLength={country.maxLen} value={phone}
                              onChange={e => setPhone(e.target.value.replace(/\D/g, ''))}
                              placeholder={'0'.repeat(country.maxLen)}
-                             className="flex-1 min-w-0 px-3 py-3 rounded-xl text-sm outline-none transition-all"
+                             className="flex-1 min-w-0 w-0 px-3 py-3 rounded-xl text-sm outline-none transition-all"
                              style={{ background: T.input, border: `1px solid ${T.inputBorder}`, color: T.text }}
                              onFocus={e => e.target.style.borderColor = 'rgba(99,102,241,0.7)'}
                              onBlur={e => e.target.style.borderColor = T.inputBorder}/>
