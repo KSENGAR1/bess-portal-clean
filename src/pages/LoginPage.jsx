@@ -293,16 +293,7 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
 
       {/* ── Left panel — logo + title ── */}
       <div className="hidden lg:flex flex-col justify-center items-center flex-1 relative z-10 px-16 py-12 gap-8">
-        <div className="flex flex-col items-center gap-6"
-             style={{
-               background: dark ? 'rgba(15,23,42,0.35)' : 'rgba(255,255,255,0.35)',
-               backdropFilter: 'blur(24px)',
-               WebkitBackdropFilter: 'blur(24px)',
-               border: `1px solid ${dark ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.70)'}`,
-               borderRadius: '32px',
-               padding: '48px 56px',
-               boxShadow: dark ? '0 8px 48px rgba(0,0,0,0.4)' : '0 8px 48px rgba(99,102,241,0.12)',
-             }}>
+        <div className="flex flex-col items-center gap-6">
           <img src="/lith-on-logo.png" alt="Lith-On"
                className="w-[280px] h-auto object-contain"
                style={{ filter: 'drop-shadow(0 4px 24px rgba(59,130,246,0.35))' }}/>
@@ -310,12 +301,6 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
             <h1 className="text-2xl font-black tracking-wide" style={{ color: T.text }}>
               BESS Monitoring System
             </h1>
-            <div className="flex items-center justify-center gap-2 mt-3">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"/>
-              <span className="text-xs font-semibold" style={{ color: dark ? '#34d399' : '#059669' }}>
-                Platform Online · 5,234 Meters Active
-              </span>
-            </div>
           </div>
         </div>
       </div>
