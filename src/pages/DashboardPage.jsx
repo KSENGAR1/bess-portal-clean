@@ -131,16 +131,6 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
         </div>
 
         <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="rounded-xl bg-blue-50 p-3 border border-blue-100">
-            <div className="flex items-center gap-2 mb-1">
-              <Battery size={14} className="text-blue-600" />
-              <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Battery SOC</span>
-            </div>
-            <p className="text-2xl font-extrabold text-blue-700">{batterySoc}%</p>
-            <div className="h-1.5 bg-blue-200 rounded-full overflow-hidden mt-1">
-              <div className="h-full rounded-full bg-blue-500 transition-all" style={{ width: `${batterySoc}%` }} />
-            </div>
-          </div>
           <div className="rounded-xl bg-amber-50 p-3 border border-amber-100">
             <div className="flex items-center gap-2 mb-1">
               <Sun size={14} className="text-amber-600" />
@@ -189,10 +179,9 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
       </div>
 
       {/* Quick BESS actions */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-2 gap-3 mb-6">
         {[
           { id: 'energy-flow', Icon: BarChart3, label: 'Energy Flow', sub: 'Live diagram', color: '#8b5cf6' },
-          { id: 'battery-health', Icon: Battery, label: 'Battery', sub: 'Health & cells', color: '#3b82f6' },
           { id: 'meter', Icon: Zap, label: 'Smart Meter', sub: 'Live usage', color: '#0066FF' },
         ].map(link => (
           <button key={link.id} onClick={() => onNavigate(link.id)}

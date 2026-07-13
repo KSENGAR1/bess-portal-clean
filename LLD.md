@@ -189,7 +189,7 @@ App.jsx
 
 ### 4.3 Route Guards (Production)
 
-```
+
 PrivateRoute
   ├── checks JWT token validity
   ├── checks role === required role
@@ -199,9 +199,9 @@ RoleGuard
   ├── resident  → can only access /resident/*
   ├── admin     → can only access /admin/*
   └── superadmin → can access /superadmin/* + /admin/* (read-only)
-```
 
----
+
+
 
 ## 5. State Management Design
 
@@ -631,7 +631,6 @@ Props:
   theme: 'purple' | 'amber'  Color scheme
   currentPage: string
   onNavigate: (page) => void
-
 Features:
   - Sticky sidebar (desktop)
   - Mobile: off-canvas with overlay
