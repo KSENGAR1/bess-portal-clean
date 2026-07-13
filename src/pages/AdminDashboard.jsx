@@ -6,7 +6,7 @@ import {
 import {
   Battery, Sun, Zap, Activity, TrendingUp, ArrowRight, Download, Filter, Search, BarChart3,
   Thermometer, Leaf, AlertTriangle, CheckCircle, Wrench, Users, XCircle, Wallet, Clock,
-  MessageSquare, Flame, Wifi
+  MessageSquare, Flame, Wifi, Building
 } from 'lucide-react'
 import { useCurrency } from '../context/CurrencyContext'
 import DataTable from '../components/DataTable'
@@ -40,10 +40,10 @@ export default function AdminDashboard() {
   const { tooltipStyle, gridStroke, axisStroke, tickFill } = useChartTheme()
 
   const stats = [
-    { label: 'Total Consumers', value: '245', icon: Users, from: '#1d4ed8', to: '#1e40af' },
-    { label: 'Active Meters', value: '238', icon: CheckCircle, from: '#065f46', to: '#064e3b' },
+    { label: 'Total Towers', value: '4', icon: Building, from: '#1d4ed8', to: '#1e40af' },
+    { label: 'Tower Admins', value: '4', icon: Users, from: '#065f46', to: '#064e3b' },
+    { label: 'Active Meters', value: '238', icon: CheckCircle, from: '#92400e', to: '#78350f' },
     { label: 'Offline Meters', value: '6', icon: XCircle, from: '#991b1b', to: '#7f1d1d' },
-    { label: "Today's Energy", value: '1,245 kWh', icon: Zap, from: '#92400e', to: '#78350f' },
     { label: 'Monthly Revenue', value: `${sym}4,52,350`, icon: Wallet, from: '#4c1d95', to: '#3b0764' },
     { label: 'Pending Payments', value: '38', icon: Clock, from: '#9a3412', to: '#7c2d12' },
     { label: 'Critical Alarms', value: '12', icon: AlertTriangle, from: '#9d174d', to: '#831843' },
@@ -158,11 +158,25 @@ export default function AdminDashboard() {
   return (
     <div className="admin-page p-6 space-y-6 animate-fade-in">
 
+      {/* Society identity banner */}
+      <div className="rounded-2xl p-4 flex items-center gap-4 border"
+           style={{ background:'rgba(217,119,6,0.08)', borderColor:'rgba(217,119,6,0.25)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+             style={{ background:'linear-gradient(135deg,#d97706,#b45309)' }}>🏢</div>
+        <div className="flex-1 min-w-0">
+          <p className="text-amber-400 font-bold text-sm">ABC Residency</p>
+          <p className="text-gray-500 text-xs">Sector 14, Delhi · 4 towers · 4 tower admins · Aggregated tower-level data</p>
+        </div>
+        <span className="flex-shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+          ● Active
+        </span>
+      </div>
+
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-          <p className="text-sm text-gray-400 mt-0.5">Society management, BESS fleet & analytics</p>
+          <p className="text-sm text-gray-400 mt-0.5">ABC Residency · Society management & BESS analytics</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => addToast('Report exported successfully', 'success')}

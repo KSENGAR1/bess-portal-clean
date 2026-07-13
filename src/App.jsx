@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Building2, Landmark, Users, UserCheck, Gauge, DollarSign,
   FileText, ShieldCheck, Activity, ScrollText, Search, Package, Plug, HardDrive,
   CreditCard, MessageSquare, Bell, Megaphone, BarChart3, Settings, User,
-  LogOut, Home, Wallet, Receipt
+  LogOut, Home, Wallet, Receipt, Building
 } from 'lucide-react'
 import { useNotifications } from './context/NotificationStore'
 import { SidebarLayout, ResidentLayout } from './layouts'
@@ -26,6 +26,7 @@ import AdminAlerts from './pages/Admin/AdminAlerts'
 import AdminReports from './pages/Admin/AdminReports'
 import AdminNotices from './pages/Admin/AdminNotices'
 import AdminSettings from './pages/Admin/AdminSettings'
+import AdminTowerAdmins from './pages/Admin/AdminTowerAdmins'
 import SuperAdminDashboard from './pages/SuperAdminDashboard'
 import SuperAdminProjects from './pages/SuperAdmin/SuperAdminProjects'
 import SuperAdminOrganizations from './pages/SuperAdmin/SuperAdminOrganizations'
@@ -44,6 +45,23 @@ import SuperAdminAPI from './pages/SuperAdmin/SuperAdminAPI'
 import EnergyFlowPage from './pages/EnergyFlowPage'
 import BatteryHealthPage from './pages/BatteryHealthPage'
 import SolarPage from './pages/SolarPage'
+// Tower Admin pages
+import TowerAdminDashboard from './pages/TowerAdmin/TowerAdminDashboard'
+import TowerAdminResidents from './pages/TowerAdmin/TowerAdminResidents'
+import TowerAdminMeters from './pages/TowerAdmin/TowerAdminMeters'
+import TowerAdminBilling from './pages/TowerAdmin/TowerAdminBilling'
+import TowerAdminAlerts from './pages/TowerAdmin/TowerAdminAlerts'
+import TowerAdminNotices from './pages/TowerAdmin/TowerAdminNotices'
+// Company Admin pages
+import CompanyAdminDashboard from './pages/CompanyAdmin/CompanyAdminDashboard'
+import CompanyAdminSocieties from './pages/CompanyAdmin/CompanyAdminSocieties'
+import CompanyAdminReports from './pages/CompanyAdmin/CompanyAdminReports'
+import CompanyAdminAdmins from './pages/CompanyAdmin/CompanyAdminAdmins'
+import CompanyAdminBilling from './pages/CompanyAdmin/CompanyAdminBilling'
+import CompanyAdminPayments from './pages/CompanyAdmin/CompanyAdminPayments'
+import CompanyAdminBESS from './pages/CompanyAdmin/CompanyAdminBESS'
+import CompanyAdminAlerts from './pages/CompanyAdmin/CompanyAdminAlerts'
+import CompanyAdminPerformance from './pages/CompanyAdmin/CompanyAdminPerformance'
 
 const PAGE_NAMES = {
   'energy-flow': 'Energy Flow', 'battery-health': 'Battery Health', 'solar': 'Solar Generation',
@@ -55,6 +73,10 @@ const PAGE_NAMES = {
   complaints: 'Complaints', alerts: 'Alerts', notices: 'Notices', reports: 'Reports',
   settings: 'Settings', profile: 'My Profile', notifications: 'Notifications',
   meter: 'Smart Meter', wallet: 'Wallet', invoices: 'Invoices', payment: 'Add Funds',
+  residents: 'Residents', societies: 'Societies', 'tower-admins': 'Tower Admins',
+  'ta-alerts': 'Alerts', 'ta-notices': 'Notices', 'ca-admins': 'Society Admins',
+  'ca-billing': 'Billing Overview', 'ca-payments': 'Payment Tracking', 
+  'ca-bess': 'BESS Fleet', 'ca-alerts': 'Alert Center', 'ca-performance': 'Performance Analytics',
 }
 
 const SEARCH_MAP = [
@@ -86,6 +108,38 @@ const SEARCH_MAP = [
   { q: ['payment', 'pay', 'wallet'], page: 'payment' },
 ]
 
+/* ── Tower Admin navigation ── */
+const TOWER_ADMIN_NAV = [
+  { page: 'dashboard',   icon: LayoutDashboard, label: 'Dashboard' },
+  { page: 'residents',   icon: Users,           label: 'Residents' },
+  { page: 'meters',      icon: Gauge,           label: 'Meters' },
+  { type: 'section',     label: 'Financial' },
+  { page: 'billing',     icon: FileText,        label: 'Billing' },
+  { type: 'section',     label: 'Operations' },
+  { page: 'ta-alerts',   icon: Bell,            label: 'Alerts' },
+  { page: 'ta-notices',  icon: Megaphone,       label: 'Notices' },
+  { type: 'section',     label: 'Account' },
+  { page: 'settings',    icon: Settings,        label: 'Settings' },
+]
+
+/* ── Company Admin navigation ── */
+const COMPANY_ADMIN_NAV = [
+  { page: 'dashboard',      icon: LayoutDashboard, label: 'Overview' },
+  { page: 'societies',      icon: Building2,       label: 'Societies' },
+  { page: 'ca-admins',      icon: Users,           label: 'Society Admins' },
+  { type: 'section',        label: 'Financial' },
+  { page: 'ca-billing',     icon: FileText,        label: 'Billing' },
+  { page: 'ca-payments',    icon: CreditCard,      label: 'Payments' },
+  { type: 'section',        label: 'Operations' },
+  { page: 'ca-bess',        icon: Activity,        label: 'BESS Fleet' },
+  { page: 'ca-alerts',      icon: Bell,            label: 'Alerts' },
+  { type: 'section',        label: 'Analytics' },
+  { page: 'ca-performance', icon: BarChart3,       label: 'Performance' },
+  { page: 'reports',        icon: FileText,        label: 'Reports' },
+  { type: 'section',        label: 'Account' },
+  { page: 'settings',       icon: Settings,        label: 'Settings' },
+]
+
 /* ── SuperAdmin navigation ── */
 const SUPERADMIN_NAV = [
   { page: 'dashboard', icon: LayoutDashboard, label: 'Overview' },
@@ -110,20 +164,20 @@ const SUPERADMIN_NAV = [
 
 /* ── Admin navigation ── */
 const ADMIN_NAV = [
-  { page: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { page: 'consumers', icon: Users, label: 'Consumers' },
-  { page: 'meters', icon: Gauge, label: 'Meters' },
-  { type: 'section', label: 'Financial' },
-  { page: 'billing', icon: FileText, label: 'Billing' },
-  { page: 'payments', icon: CreditCard, label: 'Payments' },
-  { type: 'section', label: 'Operations' },
-  { page: 'complaints', icon: MessageSquare, label: 'Complaints' },
-  { page: 'alerts', icon: Bell, label: 'Alerts' },
-  { page: 'notices', icon: Megaphone, label: 'Notices' },
-  { type: 'section', label: 'Analytics' },
-  { page: 'reports', icon: BarChart3, label: 'Reports' },
-  { type: 'section', label: 'System' },
-  { page: 'settings', icon: Settings, label: 'Settings' },
+  { page: 'dashboard',     icon: LayoutDashboard, label: 'Dashboard' },
+  { page: 'tower-admins',  icon: Building2,       label: 'Tower Admins' },
+  { page: 'meters',        icon: Gauge,           label: 'Meters' },
+  { type: 'section',       label: 'Financial' },
+  { page: 'billing',       icon: FileText,        label: 'Billing' },
+  { page: 'payments',      icon: CreditCard,      label: 'Payments' },
+  { type: 'section',       label: 'Operations' },
+  { page: 'complaints',    icon: MessageSquare,   label: 'Complaints' },
+  { page: 'alerts',        icon: Bell,            label: 'Alerts' },
+  { page: 'notices',       icon: Megaphone,       label: 'Notices' },
+  { type: 'section',       label: 'Analytics' },
+  { page: 'reports',       icon: BarChart3,       label: 'Reports' },
+  { type: 'section',       label: 'System' },
+  { page: 'settings',      icon: Settings,        label: 'Settings' },
 ]
 
 export default function App() {
@@ -191,7 +245,7 @@ export default function App() {
     if (userRole === 'admin') {
       switch (currentPage) {
         case 'dashboard': return <AdminDashboard onNavigate={setCurrentPage} />
-        case 'consumers': return <AdminConsumers onNavigate={setCurrentPage} />
+        case 'tower-admins': return <AdminTowerAdmins />
         case 'meters': return <AdminMeters onNavigate={setCurrentPage} />
         case 'billing': return <AdminBilling onNavigate={setCurrentPage} />
         case 'payments': return <AdminPayments onNavigate={setCurrentPage} />
@@ -203,6 +257,35 @@ export default function App() {
         case 'profile': return <ProfilePage onNavigate={setCurrentPage} />
         case 'notifications': return <NotificationsPage onNavigate={setCurrentPage} />
         default: return <AdminDashboard onNavigate={setCurrentPage} />
+      }
+    }
+    if (userRole === 'toweradmin') {
+      switch (currentPage) {
+        case 'dashboard':    return <TowerAdminDashboard onNavigate={setCurrentPage} />
+        case 'residents':    return <TowerAdminResidents />
+        case 'meters':       return <TowerAdminMeters />
+        case 'billing':      return <TowerAdminBilling />
+        case 'ta-alerts':    return <TowerAdminAlerts />
+        case 'ta-notices':   return <TowerAdminNotices />
+        case 'profile':      return <ProfilePage onNavigate={setCurrentPage} />
+        case 'notifications': return <NotificationsPage onNavigate={setCurrentPage} />
+        default:             return <TowerAdminDashboard onNavigate={setCurrentPage} />
+      }
+    }
+    if (userRole === 'companyadmin') {
+      switch (currentPage) {
+        case 'dashboard':      return <CompanyAdminDashboard onNavigate={setCurrentPage} />
+        case 'societies':      return <CompanyAdminSocieties />
+        case 'ca-admins':      return <CompanyAdminAdmins />
+        case 'ca-billing':     return <CompanyAdminBilling />
+        case 'ca-payments':    return <CompanyAdminPayments />
+        case 'ca-bess':        return <CompanyAdminBESS />
+        case 'ca-alerts':      return <CompanyAdminAlerts />
+        case 'ca-performance': return <CompanyAdminPerformance />
+        case 'reports':        return <CompanyAdminReports />
+        case 'profile':        return <ProfilePage onNavigate={setCurrentPage} />
+        case 'notifications':  return <NotificationsPage onNavigate={setCurrentPage} />
+        default:               return <CompanyAdminDashboard onNavigate={setCurrentPage} />
       }
     }
     if (userRole === 'superadmin') {
@@ -246,7 +329,7 @@ export default function App() {
           <div className="min-w-0">
             <p className="font-bold text-sm">Demo Mode</p>
             <p className="text-xs text-white/90 truncate">All data is simulated for demonstration purposes</p>
-          </div>
+          </div> 
         </div>
         <button onClick={hideDemoBanner}
                 className="flex-shrink-0 px-3 py-1 text-xs font-bold bg-white/20 hover:bg-white/30 rounded-lg transition-all backdrop-blur-sm border border-white/30">
@@ -259,6 +342,44 @@ export default function App() {
   return (
     <ToastProvider>
       <DemoBanner />
+      {userRole === 'toweradmin' && (
+        <SidebarLayout
+          currentPage={currentPage}
+          onNavigate={setCurrentPage}
+          userRole={userRole}
+          dark={dark}
+          onToggleDark={toggleDark}
+          onLogout={handleLogout}
+          pageName={PAGE_NAMES[currentPage] || 'Dashboard'}
+          navItems={TOWER_ADMIN_NAV}
+          searchMap={SEARCH_MAP}
+          theme="cyan"
+        >
+          <div className={showDemoBanner ? 'pt-14' : ''}>
+            {renderPage()}
+          </div>
+        </SidebarLayout>
+      )}
+
+      {userRole === 'companyadmin' && (
+        <SidebarLayout
+          currentPage={currentPage}
+          onNavigate={setCurrentPage}
+          userRole={userRole}
+          dark={dark}
+          onToggleDark={toggleDark}
+          onLogout={handleLogout}
+          pageName={PAGE_NAMES[currentPage] || 'Dashboard'}
+          navItems={COMPANY_ADMIN_NAV}
+          searchMap={SEARCH_MAP}
+          theme="green"
+        >
+          <div className={showDemoBanner ? 'pt-14' : ''}>
+            {renderPage()}
+          </div>
+        </SidebarLayout>
+      )}
+
       {userRole === 'superadmin' && (
         <SidebarLayout
           currentPage={currentPage}
@@ -275,7 +396,7 @@ export default function App() {
           <div className={showDemoBanner ? 'pt-14' : ''}>
             {renderPage()}
           </div>
-        </SidebarLayout>
+        </SidebarLayout> 
       )}
 
       {userRole === 'admin' && (
@@ -312,4 +433,5 @@ export default function App() {
       )}
     </ToastProvider>
   )
-}
+}                                                             
+

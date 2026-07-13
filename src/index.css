@@ -53,10 +53,22 @@ html.dark body {
   border-left: 3px solid #f59e0b;
   color: #b45309;
 }
+.nav-active-cyan {
+  background: linear-gradient(90deg, rgba(8,145,178,0.12), rgba(8,145,178,0.04));
+  border-left: 3px solid #0891b2;
+  color: #0e7490;
+}
+.nav-active-green {
+  background: linear-gradient(90deg, rgba(5,150,105,0.12), rgba(5,150,105,0.04));
+  border-left: 3px solid #059669;
+  color: #047857;
+}
 
 html.dark .nav-active-blue   { color: #93c5fd; }
 html.dark .nav-active-purple { color: #c4b5fd; }
 html.dark .nav-active-amber  { color: #fcd34d; }
+html.dark .nav-active-cyan   { color: #67e8f9; }
+html.dark .nav-active-green  { color: #6ee7b7; }
 
 /* ── Glass utilities ──────────────────────────── */
 @layer utilities {

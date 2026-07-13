@@ -1,14 +1,24 @@
 import { useState } from 'react'
 import { useCurrency } from '../../context/CurrencyContext'
 import { useToast } from '../../components/ToastProvider'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { useChartTheme } from '../../utils/chartTheme'
 
-const INIT = [
-  { id:'MTR-001', flat:'301-A', consumer:'Rajesh Kumar',  status:'Online',  balance:2450,  lastSync:'2 min ago',  signal:'Strong', fw:'v2.4.1', load:2.05 },
-  { id:'MTR-002', flat:'302-A', consumer:'Priya Singh',   status:'Online',  balance:-1250, lastSync:'1 min ago',  signal:'Medium', fw:'v2.4.1', load:1.20 },
-  { id:'MTR-003', flat:'303-A', consumer:'Amit Patel',    status:'Offline', balance:5000,  lastSync:'2 hrs ago',  signal:'Weak',   fw:'v2.3.0', load:0 },
-  { id:'MTR-004', flat:'401-B', consumer:'Neha Gupta',    status:'Online',  balance:3200,  lastSync:'1 min ago',  signal:'Strong', fw:'v2.4.1', load:3.40 },
-  { id:'MTR-005', flat:'402-B', consumer:'Vikram Singh',  status:'Online',  balance:1850,  lastSync:'3 min ago',  signal:'Strong', fw:'v2.4.1', load:1.85 },
-  { id:'MTR-006', flat:'501-C', consumer:'Sunita Sharma', status:'Tamper',  balance:4200,  lastSync:'10 min ago', signal:'Medium', fw:'v2.3.0', load:0.90 },
+// Tower-level meter aggregation data (not individual resident meters)
+const TOWER_METERS = [
+  { tower:'Tower A', adminName:'Ramesh T.',      metersTotal:62, online:60,  offline:2,  tamper:0,  avgLoad:2.15, totalCollection:285420, pendingBills:24, healthScore:97, lastSync:'2 min ago' },
+  { tower:'Tower B', adminName:'Priya M.',       metersTotal:58, online:57,  offline:1,  tamper:0,  avgLoad:1.88, totalCollection:267890, pendingBills:18, healthScore:98, lastSync:'1 min ago' },
+  { tower:'Tower C', adminName:'Vikram Singh',   metersTotal:63, online:59,  offline:3,  tamper:1,  avgLoad:2.42, totalCollection:312150, pendingBills:31, healthScore:94, lastSync:'3 min ago' },
+  { tower:'Common', adminName:'Maintenance',    metersTotal:55, online:53,  offline:2,  tamper:0,  avgLoad:1.67, totalCollection:110890, pendingBills:12, healthScore:96, lastSync:'5 min ago' },
+]
+
+const LOAD_TREND = [
+  { time: '6 AM',  tower_a: 0.8, tower_b: 0.6, tower_c: 0.9, common: 0.4 },
+  { time: '9 AM',  tower_a: 2.1, tower_b: 1.8, tower_c: 2.3, common: 1.2 },
+  { time: '12 PM', tower_a: 2.5, tower_b: 2.2, tower_c: 2.8, common: 1.5 },
+  { time: '3 PM',  tower_a: 3.1, tower_b: 2.7, tower_c: 3.2, common: 2.1 },
+  { time: '6 PM',  tower_a: 3.5, tower_b: 3.1, tower_c: 3.6, common: 2.5 },
+  { time: '9 PM',  tower_a: 2.8, tower_b: 2.5, tower_c: 3.0, common: 1.9 },
 ]
 
 const statusStyle = {
@@ -22,29 +32,51 @@ const signalBars = { Strong: [1,1,1], Medium: [1,1,0], Weak: [1,0,0] }
 export default function AdminMeters() {
   const { country } = useCurrency()
   const sym = country.symbol
+  const { tooltipStyle, gridStroke, axisStroke, tickFill } = useChartTheme()
   const { addToast } = useToast()
-  const [meters] = useState(INIT)
+  const [towers] = useState(TOWER_METERS)
   const [detail, setDetail] = useState(null)
-  const [filter, setFilter] = useState('All')
   const [search, setSearch] = useState('')
 
-  const visible = meters
-    .filter(m => filter==='All' || m.status===filter)
-    .filter(m => [m.id, m.flat, m.consumer].some(v=>v.toLowerCase().includes(search.toLowerCase())))
+  const filtered = towers.filter(t => 
+    t.tower.toLowerCase().includes(search.toLowerCase()) ||
+    t.adminName.toLowerCase().includes(search.toLowerCase())
+  )
+
+  const totalMeters = towers.reduce((s, t) => s + t.metersTotal, 0)
+  const totalOnline = towers.reduce((s, t) => s + t.online, 0)
+  const totalOffline = towers.reduce((s, t) => s + t.offline, 0)
+  const totalTamper = towers.reduce((s, t) => s + t.tamper, 0)
+  const totalCollection = towers.reduce((s, t) => s + t.totalCollection, 0)
+  const totalPending = towers.reduce((s, t) => s + t.pendingBills, 0)
 
   const stats = [
-    { label:'Total',   value: meters.length,                              from:'#1d4ed8',to:'#1e40af' },
-    { label:'Online',  value: meters.filter(m=>m.status==='Online').length,  from:'#065f46',to:'#064e3b' },
-    { label:'Offline', value: meters.filter(m=>m.status==='Offline').length, from:'#991b1b',to:'#7f1d1d' },
-    { label:'Tamper',  value: meters.filter(m=>m.status==='Tamper').length,  from:'#5b21b6',to:'#4c1d95' },
+    { label:'Total Meters',     value: totalMeters,                   from:'#1d4ed8',to:'#1e40af' },
+    { label:'Online',           value: totalOnline,                   from:'#065f46',to:'#064e3b' },
+    { label:'Offline',          value: totalOffline,                  from:'#991b1b',to:'#7f1d1d' },
+    { label:'Tamper Detected',  value: totalTamper,                   from:'#5b21b6',to:'#4c1d95' },
   ]
 
   return (
     <div className="admin-page p-6 space-y-5 animate-fade-in">
 
+      {/* Society identity banner */}
+      <div className="rounded-2xl p-4 flex items-center gap-4 border"
+           style={{ background:'rgba(217,119,6,0.08)', borderColor:'rgba(217,119,6,0.25)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+             style={{ background:'linear-gradient(135deg,#d97706,#b45309)' }}>🏢</div>
+        <div className="flex-1 min-w-0">
+          <p className="text-amber-400 font-bold text-sm">ABC Residency</p>
+          <p className="text-gray-500 text-xs">Sector 14, Delhi · 4 towers · 4 tower admins · Aggregated tower-level data</p>
+        </div>
+        <span className="flex-shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+          ● Active
+        </span>
+      </div>
+
       <div>
         <h1 className="text-2xl font-bold text-white">Meter Management</h1>
-        <p className="text-gray-400 text-sm mt-0.5">Monitor all smart meters in the society</p>
+        <p className="text-gray-400 text-sm mt-0.5">Monitor tower-level meter data aggregated from Tower Admins</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -57,107 +89,88 @@ export default function AdminMeters() {
         ))}
       </div>
 
+      {/* Load trend chart */}
+      <div className="rounded-2xl p-5 border dark-card border-[rgba(255,255,255,0.06)]">
+        <h2 className="text-base font-bold text-white mb-4">Hourly Load Trend by Tower</h2>
+        <ResponsiveContainer width="100%" height={240}>
+          <BarChart data={LOAD_TREND}>
+            <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} />
+            <XAxis dataKey="time" stroke={axisStroke} tick={{ fontSize:11, fill:tickFill }} />
+            <YAxis stroke={axisStroke} tick={{ fontSize:11, fill:tickFill }} tickFormatter={v=>`${v}kW`} />
+            <Tooltip contentStyle={tooltipStyle} formatter={v=>[`${v}kW`,'']} />
+            <Bar dataKey="tower_a" fill="#f59e0b" name="Tower A" radius={[8,8,0,0]} />
+            <Bar dataKey="tower_b" fill="#10b981" name="Tower B" radius={[8,8,0,0]} />
+            <Bar dataKey="tower_c" fill="#3b82f6" name="Tower C" radius={[8,8,0,0]} />
+            <Bar dataKey="common" fill="#8b5cf6" name="Common" radius={[8,8,0,0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
       <div className="flex flex-wrap gap-3">
-        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search meter, flat…"
+        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search tower, admin…"
                className="flex-1 min-w-48 px-4 py-2.5 rounded-xl dark-card border border-[rgba(255,255,255,0.08)] text-white text-sm focus:outline-none focus:border-amber-500 placeholder-gray-500 transition-all" />
-        {['All','Online','Offline','Tamper'].map(f => (
-          <button key={f} onClick={()=>setFilter(f)}
-                  className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
-                    filter===f ? 'bg-amber-600 text-white border-amber-700' : 'dark-card text-gray-400 border-[rgba(255,255,255,0.08)] hover:text-white'
-                  }`}>{f}</button>
+      </div>
+
+      {/* Tower cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {filtered.map(t => (
+          <div key={t.tower} className="rounded-2xl dark-card border border-[rgba(255,255,255,0.07)] p-5 shadow-dark-card cursor-pointer hover:border-amber-500/30 transition-all"
+               onClick={()=>setDetail(detail===t.tower?null:t.tower)}>
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <p className="text-white font-bold text-base">{t.tower}</p>
+                <p className="text-gray-500 text-xs mt-0.5">Tower Admin: {t.adminName}</p>
+              </div>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold ${
+                t.healthScore >= 95 ? 'bg-emerald-500/20 text-emerald-400' :
+                t.healthScore >= 90 ? 'bg-amber-500/20 text-amber-400' :
+                'bg-red-500/20 text-red-400'
+              }`}>
+                {t.healthScore}%
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <p className="text-xs text-gray-500">Total Meters</p>
+                <p className="text-white font-bold text-lg">{t.metersTotal}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500">Online</p>
+                <p className="text-emerald-400 font-bold text-lg">{t.online}/{t.metersTotal}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500">Avg Load</p>
+                <p className="text-blue-400 font-bold text-lg">{t.avgLoad}kW</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500">Collection</p>
+                <p className="text-green-400 font-bold text-lg">{sym}{(t.totalCollection/1000).toFixed(0)}k</p>
+              </div>
+            </div>
+
+            {detail === t.tower && (
+              <div className="pt-3 border-t border-[rgba(255,255,255,0.05)] space-y-2">
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div className="p-2 rounded-lg bg-red-500/10">
+                    <p className="text-red-400 font-bold">{t.offline}</p>
+                    <p className="text-gray-500">Offline</p>
+                  </div>
+                  <div className="p-2 rounded-lg bg-purple-500/10">
+                    <p className="text-purple-400 font-bold">{t.tamper}</p>
+                    <p className="text-gray-500">Tamper</p>
+                  </div>
+                  <div className="p-2 rounded-lg bg-amber-500/10">
+                    <p className="text-amber-400 font-bold">{t.pendingBills}</p>
+                    <p className="text-gray-500">Pending Bills</p>
+                  </div>
+                </div>
+                <div className="text-xs text-gray-500">Last Sync: {t.lastSync}</div>
+              </div>
+            )}
+          </div>
         ))}
       </div>
-
-      <div className="rounded-2xl border dark-card border-[rgba(255,255,255,0.06)] overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-[rgba(255,255,255,0.06)]">
-                {['Meter ID','Flat / Consumer','Status','Balance','Load','Signal','Last Sync','FW'].map(h=>(
-                  <th key={h} className="text-left py-2.5 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {visible.map(m => (
-                <tr key={m.id}
-                    className="border-b border-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.03)] transition-all cursor-pointer"
-                    onClick={()=>setDetail(m)}>
-                  <td className="py-3 px-3 text-white font-mono text-xs font-bold">{m.id}</td>
-                  <td className="py-3 px-3">
-                    <p className="text-white font-semibold text-sm">{m.flat}</p>
-                    <p className="text-gray-500 text-xs">{m.consumer}</p>
-                  </td>
-                  <td className="py-3 px-3">
-                    <div className="flex items-center gap-1.5">
-                      <span className={`w-2 h-2 rounded-full ${statusStyle[m.status].dot} ${m.status==='Online'?'animate-pulse':''}`} />
-                      <span className={`px-2.5 py-0.5 rounded-lg text-xs font-bold border ${statusStyle[m.status].badge}`}>{m.status}</span>
-                    </div>
-                  </td>
-                  <td className={`py-3 px-3 font-bold text-sm ${m.balance<0?'text-red-400':'text-emerald-400'}`}>
-                    {m.balance<0?'-':''}{sym}{Math.abs(m.balance).toLocaleString()}
-                  </td>
-                  <td className="py-3 px-3 text-gray-300 text-xs">{m.load} kW</td>
-                  <td className="py-3 px-3">
-                    <div className="flex items-end gap-0.5">
-                      {signalBars[m.signal].map((on,i)=>(
-                        <div key={i} className={`w-1.5 rounded-sm ${on?signalColor[m.signal].replace('text-','bg-'):'bg-gray-700'}`} style={{height:`${8+i*4}px`}} />
-                      ))}
-                    </div>
-                  </td>
-                  <td className="py-3 px-3 text-gray-400 text-xs">{m.lastSync}</td>
-                  <td className="py-3 px-3 text-gray-500 text-xs font-mono">{m.fw}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Detail modal */}
-      {detail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-             onClick={()=>setDetail(null)}>
-          <div className="w-full max-w-sm rounded-3xl p-6 animate-slide-up dark-card"
-               style={{ border: '1px solid rgba(245,158,11,0.2)' }}
-               onClick={e=>e.stopPropagation()}>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl"
-                   style={{ background:'linear-gradient(135deg,#d97706,#b45309)' }}>⚡</div>
-              <div>
-                <p className="text-white font-bold font-mono">{detail.id}</p>
-                <p className="text-amber-400 text-xs">{detail.flat} · {detail.consumer}</p>
-              </div>
-            </div>
-
-            {[
-              ['Status',    detail.status],
-              ['Balance',   `${detail.balance<0?'-':''}${sym}${Math.abs(detail.balance).toLocaleString()}`],
-              ['Live Load', `${detail.load} kW`],
-              ['Signal',    detail.signal],
-              ['Firmware',  detail.fw],
-              ['Last Sync', detail.lastSync],
-            ].map(([l,v])=>(
-              <div key={l} className="flex justify-between py-2.5 border-b border-[rgba(255,255,255,0.06)] text-sm">
-                <span className="text-gray-500">{l}</span>
-                <span className="text-white font-semibold">{v}</span>
-              </div>
-            ))}
-
-            <div className="flex gap-2 mt-5">
-              <button onClick={() => { addToast(`Pinging ${detail.id}… Signal: ${detail.signal}`, 'info'); setDetail(null, 'success') }}
-                      className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white"
-                      style={{ background:'linear-gradient(135deg,#d97706,#b45309)' }}>
-                Remote Ping
-              </button>
-              <button onClick={()=>setDetail(null)}
-                      className="flex-1 py-2.5 rounded-xl text-sm font-bold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-[rgba(255,255,255,0.06)] hover:bg-gray-200 dark:hover:bg-[rgba(255,255,255,0.1)]">
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

@@ -60,10 +60,25 @@ export default function AdminConsumers() {
 
   return (
     <div className="admin-page p-6 space-y-5 animate-fade-in">
+      
+      {/* Society identity banner */}
+      <div className="rounded-2xl p-4 flex items-center gap-4 border"
+           style={{ background:'rgba(217,119,6,0.08)', borderColor:'rgba(217,119,6,0.25)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+             style={{ background:'linear-gradient(135deg,#d97706,#b45309)' }}>🏢</div>
+        <div className="flex-1 min-w-0">
+          <p className="text-amber-400 font-bold text-sm">ABC Residency</p>
+          <p className="text-gray-500 text-xs">Sector 14, Delhi · 4 towers · 4 tower admins · Aggregated tower-level data</p>
+        </div>
+        <span className="flex-shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+          ● Active
+        </span>
+      </div>
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Consumer Management</h1>
-          <p className="text-gray-400 text-sm mt-0.5">Manage all society consumers</p>
+          <p className="text-gray-400 text-sm mt-0.5">ABC Residency · 245 consumers across 4 towers</p>
         </div>
         <button onClick={openAdd}
                 className="px-4 py-2 rounded-xl font-bold text-sm text-white"

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Sun, Moon, ChevronDown, Home, Settings, Crown, Smartphone, Mail, Eye, EyeOff, Sparkles } from 'lucide-react'
+import { Sun, Moon, ChevronDown, Home, Settings, Crown, Smartphone, Mail, Eye, EyeOff, Sparkles, Building2, Building } from 'lucide-react'
 import { useCurrency, COUNTRIES } from '../context/CurrencyContext'
 
 /* ─── Voltage Arc Canvas ──────────────────────────────────────────── */
@@ -231,9 +231,11 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
   }
 
   const roles = [
-    { value: 'resident',   label: 'Resident',   sub: 'Home user',     icon: Home, color: '#0066FF' },
-    { value: 'admin',      label: 'Admin',       sub: 'Society mgmt',  icon: Settings, color: '#d97706' },
-    { value: 'superadmin', label: 'Super Admin', sub: 'Platform ctrl', icon: Crown, color: '#7c3aed' },
+    { value: 'resident',    label: 'Resident',      sub: 'Pay bills',       icon: Home,      color: '#0066FF' },
+    { value: 'toweradmin',  label: 'Tower Admin',   sub: 'Tower mgmt',      icon: Building2, color: '#0891b2' },
+    { value: 'admin',       label: 'Society Admin', sub: 'Society mgmt',    icon: Settings,  color: '#d97706' },
+    { value: 'companyadmin',label: 'Company Admin', sub: 'Company mgmt',    icon: Building,  color: '#059669' },
+    { value: 'superadmin',  label: 'Bessify Admin', sub: 'Platform ctrl',   icon: Crown,     color: '#7c3aed' },
   ]
 
   /* theme tokens */
@@ -344,16 +346,31 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
           {/* Role selector */}
           <div className="mb-5">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-3" style={{ color: T.label }}>Select role</p>
-            <div className="grid grid-cols-3 gap-2">
-              {roles.map(r => (
+            {/* Row 1: 3 roles */}
+            <div className="grid grid-cols-3 gap-2 mb-2">
+              {roles.slice(0, 3).map(r => (
                 <button key={r.value} onClick={() => setSelectedRole(r.value)}
                         className="py-3 px-2 rounded-2xl transition-all flex flex-col items-center gap-1.5 border"
                         style={selectedRole === r.value
                           ? { background: `${r.color}22`, borderColor: `${r.color}66`, boxShadow: `0 0 14px ${r.color}30` }
                           : { background: T.input, borderColor: T.inputBorder }}>
-                  <span className="text-xl" style={{ color: selectedRole === r.value ? (dark ? '#fff' : '#0f172a') : T.sub }}><r.icon size={20} /></span>
-                  <span className="text-xs font-bold" style={{ color: selectedRole === r.value ? (dark ? '#fff' : '#0f172a') : T.sub }}>{r.label}</span>
-                  <span className="text-[9px]" style={{ color: selectedRole === r.value ? r.color : T.label }}>{r.sub}</span>
+                  <span style={{ color: selectedRole === r.value ? (dark ? '#fff' : '#0f172a') : T.sub }}><r.icon size={20} /></span>
+                  <span className="text-xs font-bold text-center leading-tight" style={{ color: selectedRole === r.value ? (dark ? '#fff' : '#0f172a') : T.sub }}>{r.label}</span>
+                  <span className="text-[9px] text-center" style={{ color: selectedRole === r.value ? r.color : T.label }}>{r.sub}</span>
+                </button>
+              ))}
+            </div>
+            {/* Row 2: 2 roles centered */}
+            <div className="grid grid-cols-2 gap-2">
+              {roles.slice(3).map(r => (
+                <button key={r.value} onClick={() => setSelectedRole(r.value)}
+                        className="py-3 px-2 rounded-2xl transition-all flex flex-col items-center gap-1.5 border"
+                        style={selectedRole === r.value
+                          ? { background: `${r.color}22`, borderColor: `${r.color}66`, boxShadow: `0 0 14px ${r.color}30` }
+                          : { background: T.input, borderColor: T.inputBorder }}>
+                  <span style={{ color: selectedRole === r.value ? (dark ? '#fff' : '#0f172a') : T.sub }}><r.icon size={20} /></span>
+                  <span className="text-xs font-bold text-center leading-tight" style={{ color: selectedRole === r.value ? (dark ? '#fff' : '#0f172a') : T.sub }}>{r.label}</span>
+                  <span className="text-[9px] text-center" style={{ color: selectedRole === r.value ? r.color : T.label }}>{r.sub}</span>
                 </button>
               ))}
             </div>

@@ -26,12 +26,22 @@ export default function SidebarLayout({
   const [suggestions, setSuggestions] = useState([])
 
   const isSuperAdmin = userRole === 'superadmin'
-  const themeColor = theme === 'purple' ? 'purple' : 'amber'
-  const accentClass = theme === 'purple' ? 'text-purple-500 dark:text-purple-400' : 'text-amber-500 dark:text-amber-400'
+  const themeColor = theme === 'purple' ? 'purple' : theme === 'amber' ? 'amber' : theme === 'cyan' ? 'cyan' : 'green'
+  const accentClass = theme === 'purple' ? 'text-purple-500 dark:text-purple-400'
+    : theme === 'amber' ? 'text-amber-500 dark:text-amber-400'
+    : theme === 'cyan' ? 'text-cyan-500 dark:text-cyan-400'
+    : 'text-emerald-500 dark:text-emerald-400'
   const badgeClass = theme === 'purple'
     ? 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
-    : 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300'
-  const activeNavClass = theme === 'purple' ? 'nav-active-purple' : 'nav-active-amber'
+    : theme === 'amber'
+    ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300'
+    : theme === 'cyan'
+    ? 'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-300'
+    : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300'
+  const activeNavClass = theme === 'purple' ? 'nav-active-purple'
+    : theme === 'amber' ? 'nav-active-amber'
+    : theme === 'cyan' ? 'nav-active-cyan'
+    : 'nav-active-green'
 
   // Build page name map from navItems
   const pageNameMap = {}
@@ -86,9 +96,26 @@ export default function SidebarLayout({
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  const profileEmail = isSuperAdmin ? 'admin@bess.io' : 'admin@society.in'
-  const profileName = isSuperAdmin ? 'Super Admin' : 'Society Admin'
-  const profileInitials = isSuperAdmin ? 'SA' : 'AD'
+  const profileEmail = userRole === 'superadmin' ? 'admin@bessify.io'
+    : userRole === 'companyadmin' ? 'company@lithonenergy.com'
+    : userRole === 'toweradmin' ? 'towerA@abcresidency.com'
+    : 'admin@society.in'
+  const profileName = userRole === 'superadmin' ? 'Bessify Admin'
+    : userRole === 'companyadmin' ? 'Company Admin'
+    : userRole === 'toweradmin' ? 'Tower Admin — A'
+    : 'Society Admin'
+  const profileInitials = userRole === 'superadmin' ? 'BA'
+    : userRole === 'companyadmin' ? 'CA'
+    : userRole === 'toweradmin' ? 'TA'
+    : 'AD'
+  const profileGradient = userRole === 'superadmin' ? 'linear-gradient(135deg,#7c3aed,#4f46e5)'
+    : userRole === 'companyadmin' ? 'linear-gradient(135deg,#059669,#047857)'
+    : userRole === 'toweradmin' ? 'linear-gradient(135deg,#0891b2,#0e7490)'
+    : 'linear-gradient(135deg,#d97706,#b45309)'
+  const profileBadge = userRole === 'superadmin' ? 'PLATFORM'
+    : userRole === 'companyadmin' ? 'COMPANY'
+    : userRole === 'toweradmin' ? 'TOWER'
+    : 'ADMIN'
 
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
@@ -137,7 +164,12 @@ export default function SidebarLayout({
                 Icon={item.icon}
                 label={item.label}
                 activeClass={activeNavClass}
-                activeDotColor={theme === 'purple' ? '#8b5cf6' : '#f59e0b'}
+                activeDotColor={
+                  theme === 'purple' ? '#8b5cf6'
+                  : theme === 'cyan' ? '#06b6d4'
+                  : theme === 'green' ? '#10b981'
+                  : '#f59e0b'
+                }
               />
             )
           })}
@@ -152,10 +184,11 @@ export default function SidebarLayout({
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
               style={{
-                background: isSuperAdmin
-                  ? 'linear-gradient(135deg,#7c3aed,#4f46e5)'
-                  : 'linear-gradient(135deg,#d97706,#b45309)',
-                color: isSuperAdmin ? '#e9d5ff' : '#fef3c7',
+                background: profileGradient,
+                color: userRole === 'superadmin' ? '#e9d5ff'
+                  : userRole === 'companyadmin' ? '#d1fae5'
+                  : userRole === 'toweradmin' ? '#cffafe'
+                  : '#fef3c7',
               }}
             >
               {profileInitials}
@@ -174,7 +207,7 @@ export default function SidebarLayout({
               v2.4.1
             </span>
             <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${badgeClass}`}>
-              {isSuperAdmin ? 'PLATFORM' : 'ADMIN'}
+              {profileBadge}
             </span>
           </div>
         </div>
