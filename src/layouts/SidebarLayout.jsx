@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Search, Sun, Moon, Bell, User, LogOut, Menu, X } from 'lucide-react'
 import { useNotifications } from '../context/NotificationStore'
+import AlertCenter from '../components/AlertCenter'
 import NavLink from './NavLink'
 import SidebarSection from './SidebarSection'
 
@@ -285,6 +286,9 @@ export default function SidebarLayout({
               {dark ? <Sun size={13} /> : <Moon size={13} />}
               <span className="hidden sm:inline">{dark ? 'Light' : 'Dark'}</span>
             </button>
+
+            {/* Alerts Center */}
+            <AlertCenter />
 
             {/* Notifications */}
             <button
