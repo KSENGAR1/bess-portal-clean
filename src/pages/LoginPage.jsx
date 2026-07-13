@@ -292,8 +292,8 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
       </button>
 
       {/* ── Left panel — logo + title ── */}
-      <div className="hidden lg:flex flex-col justify-center items-center flex-1 relative z-10 px-16 py-12 gap-8">
-        <div className="flex flex-col items-center gap-6">
+      <div className="hidden lg:flex flex-col justify-center items-center flex-1 relative z-10 px-16 py-12">
+        <div className="flex flex-col items-center gap-6 justify-center">
           <img src="/lith-on-logo.png" alt="Lith-On"
                className="w-[280px] h-auto object-contain"
                style={{ filter: 'drop-shadow(0 4px 24px rgba(59,130,246,0.35))' }}/>
