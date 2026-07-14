@@ -227,11 +227,10 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
       </div>
 
       {/* Secondary quick links */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-2 gap-3 mb-6">
         {[
           { id: 'wallet', Icon: Wallet, label: 'Transactions', sub: 'History', color: '#059669' },
           { id: 'invoices', Icon: FileText, label: 'Invoices', sub: 'Bills', color: '#7c3aed' },
-          { id: 'solar', Icon: Sun, label: 'Solar', sub: 'Generation', color: '#f59e0b' },
         ].map(link => (
           <button key={link.id} onClick={() => onNavigate(link.id)}
             className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-card hover:shadow-card-hover transition-all hover:-translate-y-1 active:scale-95 text-left border border-gray-100 dark:border-slate-700 group">
@@ -244,6 +243,22 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
           </button>
         ))}
       </div>
+
+      {/* Solar card - full width above notice board */}
+      <button onClick={() => onNavigate('solar')}
+        className="w-full bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-card hover:shadow-card-hover transition-all hover:-translate-y-1 active:scale-95 text-left border border-gray-100 dark:border-slate-700 group mb-6">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+            style={{ background: '#f59e0b18' }}>
+            <Sun size={24} style={{ color: '#f59e0b' }} />
+          </div>
+          <div className="flex-1">
+            <p className="font-bold text-gray-900 dark:text-white text-sm">Solar Generation</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Live solar panel output</p>
+          </div>
+          <ArrowRight size={18} className="text-gray-400 dark:text-gray-500 flex-shrink-0" />
+        </div>
+      </button>
 
       {/* Notice Board */}
       <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-card border border-gray-100 dark:border-slate-700 mb-6">
