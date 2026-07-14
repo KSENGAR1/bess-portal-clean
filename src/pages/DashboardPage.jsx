@@ -65,11 +65,11 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
     <div className="max-w-2xl mx-auto px-4 py-6 pb-28 animate-fade-in">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-extrabold text-gray-900">{GREETING}, Rajesh</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Tower A · Flat 302 · Galaxy Apartments</p>
-          <p className="text-xs text-gray-400 mt-0.5">{TODAY_FULL}</p>
+          <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">{GREETING}, Rajesh</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Tower A · Flat 302 · Galaxy Apartments</p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{TODAY_FULL}</p>
         </div>
-        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-green-50 text-green-600 border border-green-200 flex-shrink-0 mt-1">
+        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-700/30 flex-shrink-0 mt-1">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />Live
         </span>
       </div>
@@ -113,19 +113,19 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
       )}
 
       {/* BESS Status Grid — NEW */}
-      <div className="bg-white rounded-2xl p-5 shadow-card border border-gray-100 mb-6">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-card border border-gray-100 dark:border-slate-700 mb-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center">
-              <Zap size={18} className="text-purple-600" />
+            <div className="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
+              <Zap size={18} className="text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900 text-sm">BESS Energy Status</h3>
-              <p className="text-xs text-gray-400">Real-time battery storage system</p>
+              <h3 className="font-bold text-gray-900 dark:text-white text-sm">BESS Energy Status</h3>
+              <p className="text-xs text-gray-400 dark:text-gray-500">Real-time battery storage system</p>
             </div>
           </div>
           <button onClick={() => onNavigate('energy-flow')}
-            className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-0.5">
+            className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5">
             View Flow <ArrowRight size={12} />
           </button>
         </div>
@@ -158,22 +158,22 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
         </div>
 
         {/* Mini Power Flow */}
-        <div className="rounded-xl bg-gray-50 p-4 border border-gray-100">
+        <div className="rounded-xl bg-gray-50 dark:bg-slate-700/40 p-4 border border-gray-100 dark:border-slate-700">
           <BessPowerFlow compact />
         </div>
 
         <div className="grid grid-cols-3 gap-3 mt-4">
           <div className="text-center">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Efficiency</p>
-            <p className="text-lg font-extrabold text-purple-600">{systemEfficiency}%</p>
+            <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Efficiency</p>
+            <p className="text-lg font-extrabold text-purple-600 dark:text-purple-400">{systemEfficiency}%</p>
           </div>
           <div className="text-center">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">CO₂ Saved</p>
-            <p className="text-lg font-extrabold text-green-600">{carbonSaved.toLocaleString()} <span className="text-xs">kg</span></p>
+            <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">CO₂ Saved</p>
+            <p className="text-lg font-extrabold text-green-600 dark:text-green-400">{carbonSaved.toLocaleString()} <span className="text-xs">kg</span></p>
           </div>
           <div className="text-center">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Trees Eq</p>
-            <p className="text-lg font-extrabold text-emerald-600">{treesEq}</p>
+            <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Trees Eq</p>
+            <p className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400">{treesEq}</p>
           </div>
         </div>
       </div>
@@ -185,13 +185,13 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
           { id: 'meter', Icon: Zap, label: 'Smart Meter', sub: 'Live usage', color: '#0066FF' },
         ].map(link => (
           <button key={link.id} onClick={() => onNavigate(link.id)}
-            className="bg-white rounded-2xl p-4 shadow-card hover:shadow-card-hover transition-all hover:-translate-y-1 active:scale-95 text-left border border-gray-100 group">
+            className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-card hover:shadow-card-hover transition-all hover:-translate-y-1 active:scale-95 text-left border border-gray-100 dark:border-slate-700 group">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110"
               style={{ background: `${link.color}18` }}>
               <link.Icon size={18} style={{ color: link.color }} />
             </div>
-            <p className="font-bold text-gray-900 text-sm">{link.label}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{link.sub}</p>
+            <p className="font-bold text-gray-900 dark:text-white text-sm">{link.label}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{link.sub}</p>
           </button>
         ))}
       </div>
@@ -234,38 +234,38 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
           { id: 'solar', Icon: Sun, label: 'Solar', sub: 'Generation', color: '#f59e0b' },
         ].map(link => (
           <button key={link.id} onClick={() => onNavigate(link.id)}
-            className="bg-white rounded-2xl p-4 shadow-card hover:shadow-card-hover transition-all hover:-translate-y-1 active:scale-95 text-left border border-gray-100 group">
+            className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-card hover:shadow-card-hover transition-all hover:-translate-y-1 active:scale-95 text-left border border-gray-100 dark:border-slate-700 group">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110"
               style={{ background: `${link.color}18` }}>
               <link.Icon size={18} style={{ color: link.color }} />
             </div>
-            <p className="font-bold text-gray-900 text-sm">{link.label}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{link.sub}</p>
+            <p className="font-bold text-gray-900 dark:text-white text-sm">{link.label}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{link.sub}</p>
           </button>
         ))}
       </div>
 
       {/* Notice Board */}
-      <div className="bg-white rounded-2xl p-5 shadow-card border border-gray-100 mb-6">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-card border border-gray-100 dark:border-slate-700 mb-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Megaphone size={16} className="text-gray-700" />
-            <h3 className="font-bold text-gray-900 text-sm">Notice Board</h3>
+            <Megaphone size={16} className="text-gray-700 dark:text-gray-300" />
+            <h3 className="font-bold text-gray-900 dark:text-white text-sm">Notice Board</h3>
           </div>
           <button onClick={() => onNavigate('notifications')}
-            className="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-0.5">
+            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5">
             View All <ArrowRight size={12} />
           </button>
         </div>
         <div className="space-y-2.5">
           {notices.map((n, i) => (
-            <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
+            <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 dark:bg-slate-700/40 border border-gray-100 dark:border-slate-700">
               <div className="w-1 self-stretch rounded-full flex-shrink-0" style={{ background: n.accent }} />
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm text-gray-900 truncate">{n.title}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{n.date}</p>
+                <p className="font-semibold text-sm text-gray-900 dark:text-white truncate">{n.title}</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{n.date}</p>
               </div>
-              <span className="text-xs font-bold px-2 py-0.5 bg-white rounded-lg border border-gray-200 text-gray-600 flex-shrink-0">{n.tag}</span>
+              <span className="text-xs font-bold px-2 py-0.5 bg-white dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-gray-600 dark:text-gray-400 flex-shrink-0">{n.tag}</span>
             </div>
           ))}
         </div>
@@ -295,7 +295,7 @@ function StatCard({ label, value, sub, subColor, accent, trend, trendColor }) {
   const isUp = sub.includes('↑') || sub.includes('+')
   return (
     <div className={`bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-card border-b-2 dark:border-b border-gray-100 dark:border-slate-700 ${accent} overflow-hidden`}>
-      <p className="text-xs text-gray-500 dark:text-slate-400 font-medium mb-2 truncate">{label}</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-2 truncate">{label}</p>
       <p className="text-[15px] font-extrabold text-gray-900 dark:text-white leading-tight mb-1">{value}</p>
       <div className="flex items-center gap-1 mb-3">
         {isUp ? <TrendingUp size={11} className="flex-shrink-0" style={{ color: trendColor }} />
