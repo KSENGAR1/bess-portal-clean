@@ -298,8 +298,8 @@ export default function LoginPage({ onLogin, dark, onToggleDark }) {
                className="w-[280px] h-auto object-contain"
                style={{ filter: 'drop-shadow(0 4px 24px rgba(59,130,246,0.35))' }}/>
           <div className="text-center">
-            <h1 className="text-2xl font-black tracking-wide" style={{ color: T.text }}>
-              BESS Monitoring System
+            <h1 className="text-4xl font-black tracking-wider" style={{ color: T.text }}>
+              BESSIFY
             </h1>
           </div>
         </div>
