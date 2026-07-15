@@ -257,12 +257,12 @@ export default function BessPowerFlow({ compact = false }) {
             {/* Label - above for Solar, below for others */}
             {n.labelAbove ? (
               <>
-                <text x={n.x} y={n.y - nodeR - valueOffset}
+                <text x={n.x} y={n.y - nodeR - labelOffset + 8}
                   textAnchor="middle" fill={n.color}
                   fontSize={valueFontSize} fontWeight="700" fontFamily="Inter, system-ui, sans-serif">
                   {n.value}
                 </text>
-                <text x={n.x} y={n.y - nodeR - labelOffset}
+                <text x={n.x} y={n.y - nodeR - 8}
                   textAnchor="middle" fill={labelColor}
                   fontSize={fontSize} fontWeight="600" fontFamily="Inter, system-ui, sans-serif">
                   {n.label}
