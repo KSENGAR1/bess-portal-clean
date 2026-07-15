@@ -4,6 +4,7 @@ import { useToast } from '../../components/ToastProvider'
 const TABS = ['General', 'Billing', 'Notifications', 'Security']
 
 export default function CompanyAdminSettings() {
+  console.log('✅ COMPANY ADMIN SETTINGS PAGE LOADED')
   const [tab, setTab] = useState('General')
   const { addToast } = useToast()
 
