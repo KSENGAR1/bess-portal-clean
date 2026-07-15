@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Search, Sun, Moon, Bell, User, LogOut, Menu, X } from 'lucide-react'
 import { useNotifications } from '../context/NotificationStore'
 import AlertCenter from '../components/AlertCenter'
@@ -45,12 +45,15 @@ export default function SidebarLayout({
     : 'nav-active-green'
 
   // Build page name map from navItems
-  const pageNameMap = {}
-  navItems.forEach(item => {
-    if (item.page && item.label) {
-      pageNameMap[item.page] = item.label
-    }
-  })
+  const pageNameMap = useMemo(() => {
+    const map = {}
+    navItems.forEach(item => {
+      if (item.page && item.label) {
+        map[item.page] = item.label
+      }
+    })
+    return map
+  }, [navItems])
 
   const handleSearch = (page) => {
     if (page) {
