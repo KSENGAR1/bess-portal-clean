@@ -152,7 +152,7 @@ export default function BessPowerFlow({ compact = false }) {
   const valueFontSize = compact ? 9  : 11
 
   const nodes = [
-    { id: 'solar',   x: cx,          y: cy - outerR, label: 'Solar',   color: '#f59e0b', value: `${values.solarGen.toFixed(1)} kW` },
+    { id: 'solar',   x: cx,          y: cy - outerR, label: 'Solar',   color: '#f59e0b', value: `${values.solarGen.toFixed(1)} kW`, labelAbove: true },
     { id: 'battery', x: cx - outerR, y: cy,           label: 'Battery', color: '#3b82f6', value: `${values.batterySoc.toFixed(0)}%` },
     { id: 'grid',    x: cx + outerR, y: cy,           label: 'Grid',    color: '#22c55e', value: `${(values.gridImport > 0 ? values.gridImport : values.gridExport).toFixed(1)} kW` },
     { id: 'load',    x: cx,          y: cy + outerR,  label: 'Load',    color: '#ef4444', value: `${values.loadDemand.toFixed(1)} kW` },
@@ -253,18 +253,35 @@ export default function BessPowerFlow({ compact = false }) {
               fill={nodeBg} stroke={n.color} strokeWidth="2.5"/>
             {/* Icon */}
             <NodeIcon id={n.id} color={n.color} cx={n.x} cy={n.y} r={nodeR} />
-            {/* Label below */}
-            <text x={n.x} y={n.y + nodeR + labelOffset}
-              textAnchor="middle" fill={labelColor}
-              fontSize={fontSize} fontWeight="600" fontFamily="Inter, system-ui, sans-serif">
-              {n.label}
-            </text>
-            {/* Value below label */}
-            <text x={n.x} y={n.y + nodeR + valueOffset}
-              textAnchor="middle" fill={n.color}
-              fontSize={valueFontSize} fontWeight="700" fontFamily="Inter, system-ui, sans-serif">
-              {n.value}
-            </text>
+            
+            {/* Label - above for Solar, below for others */}
+            {n.labelAbove ? (
+              <>
+                <text x={n.x} y={n.y - nodeR - valueOffset}
+                  textAnchor="middle" fill={n.color}
+                  fontSize={valueFontSize} fontWeight="700" fontFamily="Inter, system-ui, sans-serif">
+                  {n.value}
+                </text>
+                <text x={n.x} y={n.y - nodeR - labelOffset}
+                  textAnchor="middle" fill={labelColor}
+                  fontSize={fontSize} fontWeight="600" fontFamily="Inter, system-ui, sans-serif">
+                  {n.label}
+                </text>
+              </>
+            ) : (
+              <>
+                <text x={n.x} y={n.y + nodeR + labelOffset}
+                  textAnchor="middle" fill={labelColor}
+                  fontSize={fontSize} fontWeight="600" fontFamily="Inter, system-ui, sans-serif">
+                  {n.label}
+                </text>
+                <text x={n.x} y={n.y + nodeR + valueOffset}
+                  textAnchor="middle" fill={n.color}
+                  fontSize={valueFontSize} fontWeight="700" fontFamily="Inter, system-ui, sans-serif">
+                  {n.value}
+                </text>
+              </>
+            )}
           </g>
         ))}
 
