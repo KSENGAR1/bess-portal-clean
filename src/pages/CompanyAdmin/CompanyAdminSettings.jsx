@@ -38,7 +38,7 @@ export default function CompanyAdminSettings() {
     <div className="admin-page p-6 space-y-5 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Settings</h1>
+        <h1 className="text-2xl font-bold text-white">⚙️ Company Settings</h1>
         <p className="text-gray-400 text-sm mt-0.5">Manage company configuration and preferences</p>
       </div>
 
