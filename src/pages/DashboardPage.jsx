@@ -66,8 +66,8 @@ export default function DashboardPage({ onNavigate, unreadCount, userRole = 'res
       <div className="flex items-start justify-between mb-6">
         <div>
           <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">{GREETING}, Rajesh</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Tower A · Flat 302 · Galaxy Apartments</p>
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{TODAY_FULL}</p>
+          <p className="text-sm text-gray-700 dark:text-gray-400 mt-0.5">Tower A · Flat 302 · Galaxy Apartments</p>
+          <p className="text-xs text-gray-600 dark:text-gray-500 mt-0.5">{TODAY_FULL}</p>
         </div>
         <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-700/30 flex-shrink-0 mt-1">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />Live
