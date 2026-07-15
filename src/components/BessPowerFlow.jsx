@@ -254,18 +254,18 @@ export default function BessPowerFlow({ compact = false }) {
             {/* Icon */}
             <NodeIcon id={n.id} color={n.color} cx={n.x} cy={n.y} r={nodeR} />
             
-            {/* Label - above for Solar, below for others */}
+            {/* Label - to the side for Solar, below for others */}
             {n.labelAbove ? (
               <>
-                <text x={n.x} y={n.y - nodeR - labelOffset + 8}
-                  textAnchor="middle" fill={n.color}
-                  fontSize={valueFontSize} fontWeight="700" fontFamily="Inter, system-ui, sans-serif">
-                  {n.value}
-                </text>
-                <text x={n.x} y={n.y - nodeR - 8}
-                  textAnchor="middle" fill={labelColor}
+                <text x={n.x + nodeR + 20} y={n.y - 4}
+                  textAnchor="start" fill={labelColor}
                   fontSize={fontSize} fontWeight="600" fontFamily="Inter, system-ui, sans-serif">
                   {n.label}
+                </text>
+                <text x={n.x + nodeR + 20} y={n.y + 10}
+                  textAnchor="start" fill={n.color}
+                  fontSize={valueFontSize} fontWeight="700" fontFamily="Inter, system-ui, sans-serif">
+                  {n.value}
                 </text>
               </>
             ) : (
