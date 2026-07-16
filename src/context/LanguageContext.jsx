@@ -14,18 +14,32 @@ export const LANGUAGES = [
   { code: 'zh', name: 'Chinese',    flag: '🇨🇳', nativeName: '中文'        },
 ]
 
-// LibreTranslate public instance — no API key required for basic use
-const LIBRE_ENDPOINT = 'https://libretranslate.com/translate'
+// MyMemory free API — no key required, 5000 words/day
+// GET https://api.mymemory.translated.net/get?q=TEXT&langpair=en|hi
+const MYMEMORY = 'https://api.mymemory.translated.net/get'
 
-// ── Translation cache (persisted in localStorage) ─────────────────────────
-function getCacheKey(text, lang) { return `lt_${lang}_${btoa(unescape(encodeURIComponent(text))).slice(0, 40)}` }
-
+// ── Cache helpers ──────────────────────────────────────────────────────────
+function cacheKey(text, lang) {
+  // short hash-like key to stay within localStorage limits
+  const safe = text.slice(0, 80).replace(/\s+/g, '_')
+  return `mm_${lang}_${safe}`
+}
 function readCache(text, lang) {
-  try { return localStorage.getItem(getCacheKey(text, lang)) || null } catch { return null }
+  try { return localStorage.getItem(cacheKey(text, lang)) } catch { return null }
+}
+function writeCache(text, lang, result) {
+  try { localStorage.setItem(cacheKey(text, lang), result) } catch {}
 }
 
-function writeCache(text, lang, translated) {
-  try { localStorage.setItem(getCacheKey(text, lang), translated) } catch {}
+// ── Translate one string via MyMemory ─────────────────────────────────────
+async function callMyMemory(text, targetLang) {
+  const url = `${MYMEMORY}?q=${encodeURIComponent(text)}&langpair=en|${targetLang}`
+  const res  = await fetch(url)
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const data = await res.json()
+  // responseStatus 200 = success, 429 = quota exceeded
+  if (data.responseStatus !== 200) throw new Error(`MyMemory ${data.responseStatus}`)
+  return data.responseData.translatedText || text
 }
 
 // ── Context ────────────────────────────────────────────────────────────────
@@ -37,58 +51,29 @@ export function LanguageProvider({ children }) {
   )
   const [loading, setLoading] = useState(false)
   const [error, setError]     = useState(null)
-  // In-memory cache for current session
-  const memCache = useRef({})
+  const memCache = useRef({})   // session-level cache
 
   const currentLang = LANGUAGES.find(l => l.code === langCode) || LANGUAGES[0]
 
-  // ── Translate a single string ──────────────────────────────────────────
-  const translate = useCallback(async (text, targetLang = langCode) => {
-    if (!text || typeof text !== 'string') return text
-    if (targetLang === 'en') return text
-
-    // Check memory cache first
-    const memKey = `${targetLang}::${text}`
-    if (memCache.current[memKey]) return memCache.current[memKey]
-
-    // Check localStorage cache
-    const cached = readCache(text, targetLang)
-    if (cached) { memCache.current[memKey] = cached; return cached }
-
-    try {
-      const res = await fetch(LIBRE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: text, source: 'en', target: targetLang, format: 'text' }),
-      })
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = await res.json()
-      const result = data.translatedText || text
-      memCache.current[memKey] = result
-      writeCache(text, targetLang, result)
-      return result
-    } catch (e) {
-      console.warn('LibreTranslate error:', e.message)
-      return text // Fallback to original
-    }
-  }, [langCode])
-
-  // ── Translate a whole object of key→string pairs in one batch ──────────
-  // Returns translated object. Falls back gracefully per-key on failure.
+  // ── Translate a batch object { key: 'english string', … } ────────────
+  // Returns same-shaped object with translated values.
+  // Strings are translated one-at-a-time (MyMemory has no batch endpoint)
+  // but we parallelise them with Promise.all.
   const translateBatch = useCallback(async (strings, targetLang = langCode) => {
     if (targetLang === 'en') return strings
+
     const keys   = Object.keys(strings)
     const result = { ...strings }
-
-    // Split into cached vs uncached
     const toFetch = []
+
+    // Pull from cache first
     keys.forEach(k => {
       const text = strings[k]
       if (!text) return
-      const memKey = `${targetLang}::${text}`
-      if (memCache.current[memKey]) { result[k] = memCache.current[memKey]; return }
+      const mKey = `${targetLang}::${text}`
+      if (memCache.current[mKey]) { result[k] = memCache.current[mKey]; return }
       const cached = readCache(text, targetLang)
-      if (cached) { memCache.current[memKey] = cached; result[k] = cached; return }
+      if (cached) { memCache.current[mKey] = cached; result[k] = cached; return }
       toFetch.push(k)
     })
 
@@ -96,54 +81,50 @@ export function LanguageProvider({ children }) {
 
     setLoading(true)
     setError(null)
-    try {
-      // LibreTranslate supports array input for batch
-      const texts = toFetch.map(k => strings[k])
-      const res = await fetch(LIBRE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: texts, source: 'en', target: targetLang, format: 'text' }),
-      })
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = await res.json()
 
-      // Response is either array or single object
-      const translated = Array.isArray(data) ? data.map(d => d.translatedText) : [data.translatedText]
-      toFetch.forEach((k, i) => {
-        const tx = translated[i] || strings[k]
-        result[k] = tx
-        memCache.current[`${targetLang}::${strings[k]}`] = tx
-        writeCache(strings[k], targetLang, tx)
+    // Translate all uncached strings in parallel
+    await Promise.all(
+      toFetch.map(async k => {
+        try {
+          const tx = await callMyMemory(strings[k], targetLang)
+          result[k] = tx
+          const mKey = `${targetLang}::${strings[k]}`
+          memCache.current[mKey] = tx
+          writeCache(strings[k], targetLang, tx)
+        } catch (e) {
+          console.warn(`Translation failed for "${strings[k]}":`, e.message)
+          // Leave as English on failure
+        }
       })
-    } catch (e) {
-      console.warn('LibreTranslate batch error:', e.message)
-      setError('Translation unavailable — showing English')
-    } finally {
-      setLoading(false)
-    }
+    )
+
+    setLoading(false)
     return result
   }, [langCode])
 
-  // ── Switch language ────────────────────────────────────────────────────
+  // ── Switch language + set html attributes ────────────────────────────
   const switchLanguage = useCallback((code) => {
     setLangCode(code)
+    setError(null)
     localStorage.setItem('bess_lang', code)
-    // Set document lang attribute for accessibility
     document.documentElement.setAttribute('lang', code)
-    // RTL support for Arabic / Urdu
-    document.documentElement.setAttribute('dir', ['ar', 'ur'].includes(code) ? 'rtl' : 'ltr')
+    document.documentElement.setAttribute('dir',
+      ['ar', 'ur'].includes(code) ? 'rtl' : 'ltr'
+    )
   }, [])
 
-  // Set initial dir on mount
+  // Set on mount
   if (typeof window !== 'undefined') {
     document.documentElement.setAttribute('lang', langCode)
-    document.documentElement.setAttribute('dir', ['ar', 'ur'].includes(langCode) ? 'rtl' : 'ltr')
+    document.documentElement.setAttribute('dir',
+      ['ar', 'ur'].includes(langCode) ? 'rtl' : 'ltr'
+    )
   }
 
   return (
     <LanguageContext.Provider value={{
       langCode, currentLang, loading, error,
-      translate, translateBatch, switchLanguage, LANGUAGES,
+      translateBatch, switchLanguage, LANGUAGES,
     }}>
       {children}
     </LanguageContext.Provider>
