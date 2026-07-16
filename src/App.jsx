@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import {
   LayoutDashboard, Building2, Landmark, Users, UserCheck, Gauge, DollarSign,
   FileText, ShieldCheck, Activity, ScrollText, Search, Package, Plug, HardDrive,
-  CreditCard, MessageSquare, Bell, Megaphone, BarChart3, Settings, User,
+  CreditCard, MessageSquare, Bell, Megaphone, BarChart3, User,
   LogOut, Home, Wallet, Receipt, Building
 } from 'lucide-react'
 import { useNotifications } from './context/NotificationStore'
@@ -25,7 +25,6 @@ import AdminComplaints from './pages/Admin/AdminComplaints'
 import AdminAlerts from './pages/Admin/AdminAlerts'
 import AdminReports from './pages/Admin/AdminReports'
 import AdminNotices from './pages/Admin/AdminNotices'
-import AdminSettings from './pages/Admin/AdminSettings'
 import AdminTowerAdmins from './pages/Admin/AdminTowerAdmins'
 import SuperAdminDashboard from './pages/SuperAdminDashboard'
 import SuperAdminProjects from './pages/SuperAdmin/SuperAdminProjects'
@@ -71,7 +70,7 @@ const PAGE_NAMES = {
   roles: 'Roles & Permissions', firmware: 'Firmware', audit: 'Audit Logs',
   backup: 'Backups', api: 'API Monitor', consumers: 'Consumers', payments: 'Payments',
   complaints: 'Complaints', alerts: 'Alerts', notices: 'Notices', reports: 'Reports',
-  settings: 'Settings', profile: 'My Profile', notifications: 'Notifications',
+  profile: 'My Profile', notifications: 'Notifications',
   meter: 'Smart Meter', wallet: 'Wallet', invoices: 'Invoices', payment: 'Add Funds',
   residents: 'Residents', societies: 'Societies', 'tower-admins': 'Tower Admins',
   'ta-alerts': 'Alerts', 'ta-notices': 'Notices', 'ca-admins': 'Society Admins',
@@ -102,7 +101,6 @@ const SEARCH_MAP = [
   { q: ['alert', 'alarm'], page: 'alerts' },
   { q: ['notice', 'announcement'], page: 'notices' },
   { q: ['report', 'analytics'], page: 'reports' },
-  { q: ['setting', 'config'], page: 'settings' },
   { q: ['profile', 'account'], page: 'profile' },
   { q: ['notification'], page: 'notifications' },
   { q: ['payment', 'pay', 'wallet'], page: 'payment' },
@@ -118,8 +116,6 @@ const TOWER_ADMIN_NAV = [
   { type: 'section',     label: 'Operations' },
   { page: 'ta-alerts',   icon: Bell,            label: 'Alerts' },
   { page: 'ta-notices',  icon: Megaphone,       label: 'Notices' },
-  { type: 'section',     label: 'Account' },
-  { page: 'settings',    icon: Settings,        label: 'Settings' },
 ]
 
 /* ── Company Admin navigation ── */
@@ -136,8 +132,6 @@ const COMPANY_ADMIN_NAV = [
   { type: 'section',        label: 'Analytics' },
   { page: 'ca-performance', icon: BarChart3,       label: 'Performance' },
   { page: 'reports',        icon: FileText,        label: 'Reports' },
-  { type: 'section',        label: 'Account' },
-  { page: 'settings',       icon: Settings,        label: 'Settings' },
 ]
 
 /* ── SuperAdmin navigation ── */
@@ -176,8 +170,6 @@ const ADMIN_NAV = [
   { page: 'notices',       icon: Megaphone,       label: 'Notices' },
   { type: 'section',       label: 'Analytics' },
   { page: 'reports',       icon: BarChart3,       label: 'Reports' },
-  { type: 'section',       label: 'System' },
-  { page: 'settings',      icon: Settings,        label: 'Settings' },
 ]
 
 export default function App() {
@@ -253,7 +245,6 @@ export default function App() {
         case 'alerts': return <AdminAlerts onNavigate={setCurrentPage} />
         case 'reports': return <AdminReports onNavigate={setCurrentPage} />
         case 'notices': return <AdminNotices onNavigate={setCurrentPage} />
-        case 'settings': return <AdminSettings onNavigate={setCurrentPage} />
         case 'profile': return <ProfilePage onNavigate={setCurrentPage} />
         case 'notifications': return <NotificationsPage onNavigate={setCurrentPage} />
         default: return <AdminDashboard onNavigate={setCurrentPage} />
