@@ -334,10 +334,9 @@ export default function App() {
   const TranslationBanner = () => {
     if (!translating && !translateError) return null
     return (
-      <div className={ixed bottom-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 rounded-full shadow-xl text-xs font-semibold border backdrop-blur-md
-        }>
+      <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 rounded-full shadow-xl text-xs font-semibold border bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700">
         {translating && <span className="w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin flex-shrink-0" />}
-        {translating ? 'Translating…' : translateError}
+        <span>{translating ? "Translating..." : translateError}</span>
       </div>
     )
   }
