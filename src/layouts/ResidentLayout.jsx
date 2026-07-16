@@ -1,5 +1,6 @@
 import { Sun, Moon, Bell, User, LogOut, Home, Gauge, Wallet, Receipt } from 'lucide-react'
 import { useNotifications } from '../context/NotificationStore'
+import LanguageSwitcher from '../components/LanguageSwitcher'
 
 const TODAY = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
 
@@ -42,6 +43,7 @@ export default function ResidentLayout({
             >
               {dark ? <Sun size={13} /> : <Moon size={13} />}
             </button>
+            <LanguageSwitcher />
             <button
               onClick={() => onNavigate('notifications')}
               className="relative p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors"

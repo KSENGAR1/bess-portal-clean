@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Search, Sun, Moon, Bell, User, LogOut, Menu, X } from 'lucide-react'
 import { useNotifications } from '../context/NotificationStore'
 import AlertCenter from '../components/AlertCenter'
+import LanguageSwitcher from '../components/LanguageSwitcher'
 import NavLink from './NavLink'
 import SidebarSection from './SidebarSection'
 
@@ -289,6 +290,9 @@ export default function SidebarLayout({
               {dark ? <Sun size={13} /> : <Moon size={13} />}
               <span className="hidden sm:inline">{dark ? 'Light' : 'Dark'}</span>
             </button>
+
+            {/* Language switcher */}
+            <LanguageSwitcher />
 
             {/* Alerts Center */}
             <AlertCenter />

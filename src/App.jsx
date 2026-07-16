@@ -6,6 +6,7 @@ import {
   LogOut, Home, Wallet, Receipt, Building
 } from 'lucide-react'
 import { useNotifications } from './context/NotificationStore'
+import { useLanguage } from './context/LanguageContext'
 import { SidebarLayout, ResidentLayout } from './layouts'
 import { ToastProvider } from './components/ToastProvider'
 import LoginPage from './pages/LoginPage'
@@ -328,6 +329,19 @@ export default function App() {
 
   const pageName = PAGE_NAMES[currentPage] || 'Dashboard'
 
+  const { loading: translating, error: translateError } = useLanguage()
+
+  const TranslationBanner = () => {
+    if (!translating && !translateError) return null
+    return (
+      <div className={ixed bottom-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 rounded-full shadow-xl text-xs font-semibold border backdrop-blur-md
+        }>
+        {translating && <span className="w-3 h-3 border-2 border-blue-500 border-t-transparent rounded-full animate-spin flex-shrink-0" />}
+        {translating ? 'Translating…' : translateError}
+      </div>
+    )
+  }
+
   const DemoBanner = () => !showDemoBanner ? null : (
     <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white px-4 py-2.5 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
@@ -349,6 +363,7 @@ export default function App() {
   return (
     <ToastProvider>
       <DemoBanner />
+          <TranslationBanner />
       {userRole === 'toweradmin' && (
         <SidebarLayout
           currentPage={currentPage}
