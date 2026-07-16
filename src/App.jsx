@@ -52,6 +52,7 @@ import TowerAdminMeters from './pages/TowerAdmin/TowerAdminMeters'
 import TowerAdminBilling from './pages/TowerAdmin/TowerAdminBilling'
 import TowerAdminAlerts from './pages/TowerAdmin/TowerAdminAlerts'
 import TowerAdminNotices from './pages/TowerAdmin/TowerAdminNotices'
+import TowerAdminBESS from './pages/TowerAdmin/TowerAdminBESS'
 import TowerAdminSettings from './pages/TowerAdmin/TowerAdminSettings'
 // Company Admin pages
 import CompanyAdminDashboard from './pages/CompanyAdmin/CompanyAdminDashboard'
@@ -76,7 +77,7 @@ const PAGE_NAMES = {
   settings: 'Settings', 'ta-settings': 'Settings', 'ca-settings': 'Settings', profile: 'My Profile', notifications: 'Notifications',
   meter: 'Smart Meter', wallet: 'Wallet', invoices: 'Invoices', payment: 'Add Funds',
   residents: 'Residents', societies: 'Societies', 'tower-admins': 'Tower Admins',
-  'ta-alerts': 'Alerts', 'ta-notices': 'Notices', 'ca-admins': 'Society Admins',
+  'ta-alerts': 'Alerts', 'ta-notices': 'Notices', 'ta-bess': 'BESS Health', 'ca-admins': 'Society Admins',
   'ca-billing': 'Billing Overview', 'ca-payments': 'Payment Tracking', 
   'ca-bess': 'BESS Fleet', 'ca-alerts': 'Alert Center', 'ca-performance': 'Performance Analytics',
 }
@@ -115,6 +116,7 @@ const TOWER_ADMIN_NAV = [
   { page: 'dashboard',   icon: LayoutDashboard, label: 'Dashboard' },
   { page: 'residents',   icon: Users,           label: 'Residents' },
   { page: 'meters',      icon: Gauge,           label: 'Meters' },
+  { page: 'ta-bess',     icon: Activity,        label: 'BESS Health' },
   { type: 'section',     label: 'Financial' },
   { page: 'billing',     icon: FileText,        label: 'Billing' },
   { type: 'section',     label: 'Operations' },
@@ -266,6 +268,7 @@ export default function App() {
         case 'dashboard':    return <TowerAdminDashboard onNavigate={setCurrentPage} />
         case 'residents':    return <TowerAdminResidents />
         case 'meters':       return <TowerAdminMeters />
+        case 'ta-bess':      return <TowerAdminBESS />
         case 'billing':      return <TowerAdminBilling />
         case 'ta-alerts':    return <TowerAdminAlerts />
         case 'ta-notices':   return <TowerAdminNotices />
